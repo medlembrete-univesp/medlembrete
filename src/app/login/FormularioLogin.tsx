@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { ESTADO_LOGIN_INICIAL, entrar } from "./acoes";
+import { entrar, type EstadoLogin } from "./acoes";
+
+// Fica aqui, e não em acoes.ts: arquivos "use server" só podem exportar funções.
+const ESTADO_INICIAL: EstadoLogin = { erros: {}, valores: { email: "" } };
 
 export function FormularioLogin({ proximo, aviso }: { proximo?: string; aviso?: string }) {
-  const [estado, acao, pendente] = useActionState(entrar, ESTADO_LOGIN_INICIAL);
+  const [estado, acao, pendente] = useActionState(entrar, ESTADO_INICIAL);
 
   return (
     <form action={acao} className="formulario" noValidate>

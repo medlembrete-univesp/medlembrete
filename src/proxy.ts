@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { configSupabase } from "@/lib/supabase/config";
 
 /** Rotas acessíveis sem login (RF03: todas as outras exigem sessão). */
-const PUBLICAS = ["/login", "/cadastro", "/api/saude"];
+const PUBLICAS = ["/login", "/cadastro", "/logout", "/api/saude"];
 
 function ehPublica(caminho: string): boolean {
   return PUBLICAS.some((p) => caminho === p || caminho.startsWith(`${p}/`));

@@ -11,8 +11,6 @@ export interface EstadoLogin {
   valores: { email: string };
 }
 
-export const ESTADO_LOGIN_INICIAL: EstadoLogin = { erros: {}, valores: { email: "" } };
-
 /** Destino seguro depois do login: só caminhos internos. */
 function destinoSeguro(proximo: string | null): string {
   if (proximo && /^\/(?!\/)[\w\-/?=&%.]*$/.test(proximo) && !proximo.startsWith("/login")) {

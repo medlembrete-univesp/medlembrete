@@ -4,7 +4,13 @@ import Link from "next/link";
 import { useActionState, useId, useState } from "react";
 import { SENHA_MINIMA, UFS } from "@/lib/validacao";
 import { consultarCep, type ResultadoCep } from "@/lib/viacep";
-import { ESTADO_CADASTRO_INICIAL, cadastrar } from "./acoes";
+import { cadastrar, type EstadoCadastro } from "./acoes";
+
+// Fica aqui, e não em acoes.ts: arquivos "use server" só podem exportar funções.
+const ESTADO_INICIAL: EstadoCadastro = {
+  erros: {},
+  valores: { nome: "", email: "", cep: "", cidade: "", uf: "" },
+};
 
 function Erro({ id, texto }: { id: string; texto?: string }) {
   if (!texto) return null;
@@ -16,7 +22,7 @@ function Erro({ id, texto }: { id: string; texto?: string }) {
 }
 
 export function FormularioCadastro() {
-  const [estado, acao, pendente] = useActionState(cadastrar, ESTADO_CADASTRO_INICIAL);
+  const [estado, acao, pendente] = useActionState(cadastrar, ESTADO_INICIAL);
   const [cidade, setCidade] = useState(estado.valores.cidade);
   const [uf, setUf] = useState(estado.valores.uf);
   const [avisoCep, setAvisoCep] = useState<ResultadoCep | null>(null);

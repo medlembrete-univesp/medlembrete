@@ -74,8 +74,8 @@ docs/               guias de deploy e de desenvolvimento
 | Bloco | Situação |
 |---|---|
 | 1. Estrutura, `/api/saude`, CI | feito |
-| 2. Esquema SQL, `agora()`, cadastro, login, logout, layout acessível | código pronto; falta testar com o Supabase |
-| 3. ViaCEP no cadastro | código pronto; falta testar com o Supabase |
+| 2. Esquema SQL, `agora()`, cadastro, login, logout, layout acessível | feito e testado com o Supabase |
+| 3. ViaCEP no cadastro | feito |
 | 4. CRUD de medicamentos | a fazer |
 | 5. Página do dia, "Tomei", histórico | serviços puros prontos e testados; páginas a fazer |
 | 6. Lembretes | a fazer |

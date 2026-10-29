@@ -16,11 +16,6 @@ export interface EstadoCadastro {
   valores: Omit<DadosCadastro, "senha" | "confirmacao">;
 }
 
-export const ESTADO_CADASTRO_INICIAL: EstadoCadastro = {
-  erros: {},
-  valores: { nome: "", email: "", cep: "", cidade: "", uf: "" },
-};
-
 function semSenhas(d: DadosCadastro): EstadoCadastro["valores"] {
   return { nome: d.nome, email: d.email, cep: d.cep, cidade: d.cidade, uf: d.uf };
 }
