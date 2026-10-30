@@ -1,7 +1,8 @@
 # MedLembrete
 
-Aplicação web acessível para lembrar a hora dos medicamentos, registrar as doses tomadas e
-acompanhar a aderência ao tratamento. Projeto Integrador II — UNIVESP.
+Gestor de medicamentos acessível para profissionais de saúde e cuidadores: o profissional
+cadastra seus pacientes e os medicamentos de cada um, recebe lembretes na hora da dose,
+registra as doses tomadas e acompanha a aderência ao tratamento. Projeto Integrador II — UNIVESP.
 
 Os lembretes (modal, som e notificação) funcionam **enquanto a página estiver aberta**.
 Essa é uma limitação conhecida do MVP, não um defeito.
@@ -39,9 +40,9 @@ Abra <http://localhost:3000>. Sem sessão, o app redireciona para `/login`.
 
 ## Banco de dados
 
-Cole o conteúdo de [supabase/migrations/0001_schema.sql](supabase/migrations/0001_schema.sql)
-no **SQL Editor** do Supabase e execute. O script cria as quatro tabelas, o trigger que
-cria o perfil no cadastro e as políticas de RLS. Pode ser executado mais de uma vez.
+Execute, em ordem, os arquivos de [supabase/migrations/](supabase/migrations/) no **SQL Editor**
+do Supabase: `0001_schema.sql` (tabelas, trigger de perfil e RLS) e `0002_pacientes.sql`
+(tabela de pacientes e RLS pela cadeia profissional → paciente). Cada um roda uma vez.
 
 No painel do Supabase, em **Authentication → Sign In / Providers → Email**, desligue
 **Confirm email**: o MVP não envia e-mails.
@@ -60,6 +61,7 @@ npm run build       # build de produção
 ```
 src/app/            páginas e rotas de API (App Router)
 src/components/     componentes React
+src/lib/dados/      acesso ao Supabase (pacientes, medicamentos)
 src/lib/servicos/   agora(), dosesDoDia(), historico(), aderencia() — funções puras
 src/lib/supabase/   clientes Supabase (navegador e servidor)
 src/lib/validacao.ts, src/lib/viacep.ts
@@ -76,7 +78,7 @@ docs/               guias de deploy e de desenvolvimento
 | 1. Estrutura, `/api/saude`, CI | feito |
 | 2. Esquema SQL, `agora()`, cadastro, login, logout, layout acessível | feito e testado com o Supabase |
 | 3. ViaCEP no cadastro | feito |
-| 4. CRUD de medicamentos | a fazer |
+| 4. CRUD de pacientes e de medicamentos | feito |
 | 5. Página do dia, "Tomei", histórico | serviços puros prontos e testados; páginas a fazer |
 | 6. Lembretes | a fazer |
 | 7. Dashboard | a fazer |

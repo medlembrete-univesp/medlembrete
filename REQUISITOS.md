@@ -4,11 +4,17 @@ Projeto Integrador II — UNIVESP. Documento de requisitos do MVP, para a stack 
 
 ## Objetivo e escopo
 
-O MedLembrete deve estar no ar, com HTTPS, permitindo que um usuário se cadastre,
-registre seus medicamentos e receba lembretes na tela enquanto a página estiver aberta.
+O MedLembrete é um **gestor de medicamentos para profissionais de saúde e cuidadores**.
+Quem faz login é o profissional: ele cadastra seus pacientes e, dentro de cada paciente, os
+medicamentos com horários e dias da semana. A página do dia reúne as doses de todos os
+pacientes, com filtro por paciente, e os lembretes avisam o profissional enquanto a página
+estiver aberta.
 
-Seis entregas: cadastro e login, CEP preenchido via ViaCEP, CRUD de medicamentos com
-horários e dias da semana, página do dia com o botão "Tomei", lembrete visual e sonoro,
+O MVP deve estar no ar, com HTTPS, permitindo que um profissional se cadastre, registre
+pacientes e medicamentos e receba lembretes na tela.
+
+Sete entregas: cadastro e login, CEP preenchido via ViaCEP, CRUD de pacientes, CRUD de
+medicamentos com horários e dias da semana, página do dia com o botão "Tomei", lembrete visual e sonoro,
 histórico e dashboard de aderência. Tudo usa ferramentas gratuitas.
 
 Regra: se uma funcionalidade travar por mais de 45 minutos, ela é simplificada ou cortada.
@@ -58,19 +64,20 @@ conhecida, não um defeito.
 - Login por e-mail e senha; mensagem genérica em caso de erro ("E-mail ou senha incorretos").
 - Todas as páginas, exceto login e cadastro, exigem login.
 
-### RF04 — Cadastro de medicamento
-- Campos: nome (obrigatório), dose em texto livre (ex.: "1 comprimido de 50 mg"), observação (opcional).
+### RF04 — Cadastro de paciente e de medicamento
+- Paciente: nome (obrigatório), data de nascimento e observações (opcionais). Medicamentos são cadastrados dentro de um paciente.
+- Medicamento: nome (obrigatório), dose em texto livre (ex.: "1 comprimido de 50 mg"), observação (opcional).
 - Um ou mais horários (HH:MM), cada um com os dias da semana marcados em checkboxes. Botão "Adicionar horário" na própria tela.
 - Pelo menos um horário e um dia são obrigatórios.
 
-### RF05 — Editar e excluir medicamento
-- Editar altera nome, dose, observação e horários.
-- Excluir é lógico (`ativo = false`): o medicamento some da lista e do dia, mas o histórico continua.
+### RF05 — Editar e excluir paciente e medicamento
+- Editar medicamento altera nome, dose, observação e horários. Editar paciente altera nome, nascimento e observações.
+- Excluir é lógico (`ativo = false`): o registro some das listas e da página do dia, mas o histórico continua.
 - Excluir pede confirmação.
-- Um usuário nunca vê nem altera medicamentos de outro (retorna 404).
+- Um profissional nunca vê nem altera pacientes ou medicamentos de outro (retorna 404).
 
 ### RF06 — Página do dia
-- Lista as doses de hoje em ordem de horário, calculadas pelos horários ativos e pelo dia da semana.
+- Lista as doses de hoje de todos os pacientes ativos, em ordem de horário, calculadas pelos horários ativos e pelo dia da semana. Cada dose mostra o nome do paciente; filtro opcional por paciente.
 - Cada dose mostra horário, nome, dose e status: Pendente, Tomada (com hora) ou Atrasada (mais de 60 min após o horário sem registro).
 - Botão grande "Tomei ✓" em cada dose pendente ou atrasada.
 
@@ -90,7 +97,7 @@ conhecida, não um defeito.
 - Doses programadas sem registro aparecem como "Não tomada".
 
 ### RF10 — Dashboard de aderência
-- Aderência = doses tomadas ÷ doses programadas até o momento, em %, por medicamento, nos últimos 7 ou 30 dias.
+- Aderência = doses tomadas ÷ doses programadas até o momento, em %, por paciente e medicamento, nos últimos 7 ou 30 dias.
 - Gráfico de barras (Chart.js) e, abaixo, os mesmos números em tabela, para quem usa leitor de tela.
 - Sem doses no período: mensagem "Ainda não há dados" em vez de gráfico vazio.
 
@@ -121,14 +128,16 @@ conhecida, não um defeito.
 
 ## Modelo de dados
 
-Quatro tabelas, em `supabase/migrations/0001_schema.sql`. Doses do dia **não** são gravadas
-antes: são calculadas a partir de `horario` e só viram linha em `registro_dose` quando o
-usuário clica em "Tomei".
+Cinco tabelas, em `supabase/migrations/`. Doses do dia **não** são gravadas antes: são
+calculadas a partir de `horario` e só viram linha em `registro_dose` quando o profissional
+clica em "Tomei".
 
-A tabela de usuários do Supabase Auth (`auth.users`) guarda e-mail e hash da senha. A tabela
-`perfil` guarda o resto e é criada automaticamente por trigger no cadastro.
+A tabela de usuários do Supabase Auth (`auth.users`) guarda e-mail e hash da senha do
+profissional. A tabela `perfil` guarda o resto e é criada automaticamente por trigger.
 
-### perfil (dados do usuário)
+Cadeia de posse, usada pela RLS: profissional → paciente → medicamento → horario → registro_dose.
+
+### perfil (dados do profissional)
 | Campo | Tipo | Regra |
 |---|---|---|
 | id | uuid | PK, FK → auth.users.id |
@@ -138,11 +147,22 @@ A tabela de usuários do Supabase Auth (`auth.users`) guarda e-mail e hash da se
 | uf | text(2) | opcional |
 | criado_em | timestamptz | padrão: now() |
 
+### paciente
+| Campo | Tipo | Regra |
+|---|---|---|
+| id | bigint identity | PK |
+| usuario_id | uuid | FK → auth.users.id (o profissional) |
+| nome | text(120) | obrigatório |
+| data_nascimento | date | opcional |
+| observacao | text(255) | opcional |
+| ativo | boolean | padrão: true |
+| criado_em | timestamptz | padrão: now() |
+
 ### medicamento
 | Campo | Tipo | Regra |
 |---|---|---|
 | id | bigint identity | PK |
-| usuario_id | uuid | FK → auth.users.id |
+| paciente_id | bigint | FK → paciente.id |
 | nome | text(120) | obrigatório |
 | dose | text(120) | obrigatório |
 | observacao | text(255) | opcional |
@@ -169,7 +189,8 @@ A tabela de usuários do Supabase Auth (`auth.users`) guarda e-mail e hash da se
 Restrição única em `registro_dose (horario_id, data)`.
 
 Ao editar um medicamento, horários alterados ou removidos recebem `ativo = false` e os novos
-são criados. Nunca apaguem horários do banco: o histórico depende deles.
+são criados; horários iguais são mantidos. Nunca apaguem horários do banco: o histórico
+depende deles.
 
 ## Rotas
 
@@ -177,27 +198,31 @@ Páginas (App Router) e endpoints JSON. Todas, exceto cadastro, login e saúde, 
 
 | Método | Rota | O que faz | RF |
 |---|---|---|---|
-| GET, POST | /cadastro | Formulário e criação de usuário | RF01, RF02 |
+| GET, POST | /cadastro | Formulário e criação do profissional | RF01, RF02 |
 | GET, POST | /login | Formulário e autenticação | RF03 |
 | POST | /logout | Encerra a sessão | RF03 |
 | GET | / | Redireciona para /hoje | — |
-| GET | /hoje | Página do dia | RF06 |
-| GET | /medicamentos | Lista medicamentos ativos | RF04 |
-| GET, POST | /medicamentos/novo | Cadastro de medicamento | RF04 |
-| GET, POST | /medicamentos/[id]/editar | Edição | RF05 |
-| POST | /medicamentos/[id]/excluir | Exclusão lógica | RF05 |
-| GET | /historico | Histórico; aceita `?inicio=AAAA-MM-DD&fim=AAAA-MM-DD` | RF09 |
+| GET | /hoje | Página do dia (todos os pacientes; `?paciente=id` filtra) | RF06 |
+| GET | /pacientes | Lista pacientes ativos | RF04 |
+| GET, POST | /pacientes/novo | Cadastro de paciente | RF04 |
+| GET | /pacientes/[id] | Paciente e seus medicamentos ativos | RF04 |
+| GET, POST | /pacientes/[id]/editar | Edição do paciente | RF05 |
+| POST | /pacientes/[id]/excluir | Exclusão lógica do paciente | RF05 |
+| GET, POST | /pacientes/[id]/medicamentos/novo | Cadastro de medicamento | RF04 |
+| GET, POST | /medicamentos/[id]/editar | Edição do medicamento | RF05 |
+| POST | /medicamentos/[id]/excluir | Exclusão lógica do medicamento | RF05 |
+| GET | /historico | Histórico; aceita `?inicio=AAAA-MM-DD&fim=AAAA-MM-DD&paciente=id` | RF09 |
 | GET | /dashboard | Página do gráfico | RF10 |
 | GET | /api/doses/hoje | JSON das doses de hoje com status | RF06, RF08 |
 | POST | /api/doses | Registra dose tomada; corpo `{horario_id, data}` | RF07 |
-| GET | /api/aderencia?dias=7 | JSON por medicamento: programadas, tomadas, % | RF10 |
+| GET | /api/aderencia?dias=7 | JSON por paciente e medicamento: programadas, tomadas, % | RF10 |
 | GET | /api/saude | Retorna ok (para checar o deploy) | — |
 
 Exemplo de item em `/api/doses/hoje`:
 
 ```json
-{"horario_id": 3, "hora": "08:00", "medicamento": "Losartana", "dose": "1 comprimido 50 mg",
- "status": "pendente", "tomado_em": null}
+{"horario_id": 3, "hora": "08:00", "paciente": "Dona Maria", "medicamento": "Losartana",
+ "dose": "1 comprimido 50 mg", "status": "pendente", "tomado_em": null}
 ```
 
 O cálculo de doses e de aderência fica em `src/lib/servicos/`, em funções puras que recebem
@@ -213,10 +238,11 @@ medlembrete/
 │   │   ├── globals.css           # tema padrão e alto contraste
 │   │   ├── page.tsx              # redireciona para /hoje
 │   │   ├── cadastro, login       # públicas
-│   │   ├── hoje, medicamentos, historico, dashboard
+│   │   ├── hoje, pacientes, medicamentos, historico, dashboard
 │   │   └── api/saude, api/doses, api/doses/hoje, api/aderencia
 │   ├── components/               # componentes React reutilizáveis
 │   ├── lib/
+│   │   ├── dados/                # acesso ao Supabase (pacientes, medicamentos)
 │   │   ├── servicos/             # agora(), dosesDoDia(), aderencia() — funções puras
 │   │   └── supabase/             # clientes browser/server
 │   └── proxy.ts                  # renova sessão e protege rotas
@@ -248,8 +274,10 @@ Mínimo de 14 testes passando com `npm test` antes do deploy final.
 | tests/auth.test.ts | Página protegida sem login redireciona para /login | RF03 |
 | tests/medicamentos.test.ts | Criar medicamento com dois horários | RF04 |
 | tests/medicamentos.test.ts | Criar sem horário é recusado | RF04 |
-| tests/medicamentos.test.ts | Usuário B recebe 404 ao editar medicamento do usuário A | RF05 |
-| tests/medicamentos.test.ts | Excluir esconde da lista e mantém os registros | RF05 |
+| tests/medicamentos.test.ts | Editar mantém horários iguais, desativa alterados e cria novos | RF05 |
+| tests/pacientes.test.ts | Paciente exige nome e recusa nascimento no futuro | RF04 |
+| (roteiro manual/RLS) | Profissional B recebe 404 ao abrir paciente ou medicamento de A | RF05 |
+| (roteiro manual/RLS) | Excluir esconde da lista e mantém os registros | RF05 |
 | tests/servicos.test.ts | dosesDoDia numa segunda traz só horários com dia 0 | RF06 |
 | tests/servicos.test.ts | Dose sem registro 61 min após o horário fica "atrasada" | RF06 |
 | tests/doses.test.ts | POST /api/doses registra e repetir não duplica | RF07 |
@@ -268,7 +296,7 @@ validação dos formulários e das rotas de API com o cliente Supabase substitu�
 | 1. Contas (GitHub, Supabase, Vercel), repositório, estrutura, `/api/saude` | `/api/saude` responde ok no endereço da Vercel |
 | 2. Esquema SQL, `agora()`, cadastro, login, logout, layout acessível | Criar conta e entrar funciona em produção |
 | 3. ViaCEP no cadastro | CEP válido preenche cidade/UF; inválido mostra aviso |
-| 4. CRUD de medicamentos com vários horários | Criar, editar e excluir funcionam; testes RF04/RF05 passam |
+| 4. CRUD de pacientes e de medicamentos com vários horários | Criar, editar e excluir funcionam; testes RF04/RF05 passam |
 | 5. `servicos`, página do dia, POST /api/doses, histórico | "Tomei" muda o status sem recarregar; histórico mostra "Não tomada" |
 | 6. Lembretes: verificação, modal, som, notificação | Dose cadastrada para daqui a 2 min dispara o lembrete |
 | 7. Dashboard com Chart.js e tabela | Percentuais batem com o histórico |
@@ -283,7 +311,7 @@ som), filtro de período do histórico. Nunca cortem acessibilidade nem testes.
 - [ ] Site público na Vercel abre com HTTPS e `/api/saude` responde ok
 - [ ] Dados continuam lá depois de um novo deploy (prova de que o banco é o Supabase)
 - [ ] Cadastro com CEP, login e logout funcionando em produção
-- [ ] CRUD de medicamentos com vários horários e dias
+- [ ] CRUD de pacientes e de medicamentos com vários horários e dias
 - [ ] Página do dia com status correto no horário de Brasília
 - [ ] "Tomei" registra sem duplicar
 - [ ] Lembrete dispara com modal, som e notificação

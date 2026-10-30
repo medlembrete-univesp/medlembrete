@@ -373,3 +373,146 @@ th {
   font-size: 0.9rem;
   border-top: 1px solid var(--borda);
 }
+
+/* Títulos com botão ao lado */
+.titulo-com-acao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 1.5rem 0 1rem;
+}
+.titulo-com-acao h1,
+.titulo-com-acao h2 {
+  margin: 0;
+}
+.texto-suave {
+  color: var(--texto-suave);
+}
+
+/* Listas de cartões (pacientes, medicamentos) */
+.lista-cartoes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cartao-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.cartao-item > div:first-child {
+  flex: 1 1 18rem;
+}
+.cartao-item p {
+  margin-bottom: 0.4rem;
+}
+.cartao-titulo {
+  font-size: 1.2rem;
+  margin-bottom: 0.35rem;
+}
+.lista-horarios {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+.hora {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.acoes-linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  align-content: flex-start;
+}
+
+/* Formulário de medicamento: horários dinâmicos */
+.formulario-largo {
+  max-width: 40rem;
+}
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 1.25rem;
+  min-width: 0;
+}
+.horarios legend {
+  padding: 0;
+}
+.horario-linha {
+  border: 2px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 0.75rem 1rem 1rem;
+  margin: 0 0 1rem;
+  background: var(--superficie);
+}
+.horario-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.horario-topo label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+.horario-topo input[type="time"] {
+  font: inherit;
+  min-height: 44px;
+  padding: 0.4rem 0.6rem;
+  border: 2px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--fundo);
+  color: var(--texto);
+}
+.horario-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.dias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.dia {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 0.6rem;
+  border: 2px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--fundo);
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+}
+.dia input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.dia-marcado {
+  background: var(--primaria);
+  color: var(--primaria-texto);
+  border-color: var(--primaria);
+}
+.dia:has(input:focus-visible) {
+  outline: 3px solid var(--foco);
+  outline-offset: 3px;
+}
+.campo textarea {
+  resize: vertical;
+}
