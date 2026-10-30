@@ -72,6 +72,17 @@ tests/              Vitest
 docs/               guias de deploy e de desenvolvimento
 ```
 
+## Acessibilidade
+
+- `<html lang="pt-BR">`, um `h1` por página, landmarks e link "Pular para o conteúdo".
+- Fonte base de 18 px, botões com no mínimo 44 × 44 px, foco sempre visível.
+- Tema de alto contraste (amarelo e branco sobre preto), salvo no navegador.
+- Formulários com `label`, erros ligados por `aria-describedby` e anunciados por `role="alert"`.
+- Lembrete em `role="alertdialog"` com foco gerenciado, Esc para fechar e região `aria-live`.
+- Status de dose sempre em texto e cor; gráfico do dashboard acompanhado de tabela.
+- Auditoria: Lighthouse 100 em acessibilidade e boas práticas em login, cadastro, hoje,
+  pacientes, paciente, novo medicamento, histórico e dashboard.
+
 ## Progresso
 
 | Bloco | Situação |
@@ -83,7 +94,7 @@ docs/               guias de deploy e de desenvolvimento
 | 5. Página do dia, "Tomei", API de doses, histórico | feito |
 | 6. Lembretes na tela (modal, som, notificação) | feito |
 | 7. Dashboard de aderência (Chart.js + tabela) | feito |
-| 8. Acessibilidade (Lighthouse, NVDA) | base pronta; auditoria a fazer |
+| 8. Acessibilidade | Lighthouse 100 em acessibilidade e boas práticas nas 7 páginas principais; contraste ≥ 4,5:1 nos dois temas; teste com NVDA a fazer |
 | 9. Testes finais, deploy, celular | a fazer |
 
 Link público: _(preencher após o primeiro deploy na Vercel)_
