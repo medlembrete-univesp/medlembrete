@@ -53,3 +53,11 @@ export function periodoValido(
   }
   return { inicio: i, fim: f, aviso };
 }
+
+export const DIAS_PERMITIDOS = [7, 30] as const;
+export type DiasAderencia = (typeof DIAS_PERMITIDOS)[number];
+
+/** RF10 — período do dashboard: 7 (padrão) ou 30 dias. */
+export function diasValidos(texto: string | null | undefined): DiasAderencia {
+  return texto === "30" ? 30 : 7;
+}
