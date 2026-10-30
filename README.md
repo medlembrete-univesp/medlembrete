@@ -7,6 +7,7 @@ registra as doses tomadas e acompanha a aderência ao tratamento. Projeto Integr
 Os lembretes (modal, som e notificação) funcionam **enquanto a página estiver aberta**.
 Essa é uma limitação conhecida do MVP, não um defeito.
 
+- Site: <https://med-lembrete.vercel.app>
 - Requisitos completos: [REQUISITOS.md](REQUISITOS.md)
 - Como configurar Supabase e Vercel: [docs/DEPLOY.md](docs/DEPLOY.md)
 - Regras para quem desenvolve: [docs/DESENVOLVIMENTO.md](docs/DESENVOLVIMENTO.md)
@@ -95,6 +96,6 @@ docs/               guias de deploy e de desenvolvimento
 | 6. Lembretes na tela (modal, som, notificação) | feito |
 | 7. Dashboard de aderência (Chart.js + tabela) | feito |
 | 8. Acessibilidade | Lighthouse 100 em acessibilidade e boas práticas nas 7 páginas principais; contraste ≥ 4,5:1 nos dois temas; teste com NVDA a fazer |
-| 9. Testes finais, deploy, celular | a fazer |
+| 9. Deploy na Vercel, testes em produção | feito; teste no celular e com NVDA a fazer |
 
-Link público: _(preencher após o primeiro deploy na Vercel)_
+Link público: <https://med-lembrete.vercel.app>
