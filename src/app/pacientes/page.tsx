@@ -43,6 +43,7 @@ export default async function PaginaPacientes() {
                       ? `Nascimento: ${dataBR(p.data_nascimento)}${idade !== null ? ` (${idade} anos)` : ""}`
                       : "Data de nascimento não informada"}
                   </p>
+                  {(p.cidade || p.uf) && <p className="texto-suave">{[p.cidade, p.uf].filter(Boolean).join("/")}</p>}
                   {p.observacao && <p>{p.observacao}</p>}
                 </div>
                 <div className="acoes-linha">

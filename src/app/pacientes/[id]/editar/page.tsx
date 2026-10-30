@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FormularioPaciente } from "@/components/FormularioPaciente";
 import { idDaRota } from "@/lib/dados/contexto";
-import { obterPaciente } from "@/lib/dados/pacientes";
+import { obterPaciente, paraFormulario } from "@/lib/dados/pacientes";
 import { acaoEditarPaciente } from "../../acoes";
 
 export const metadata: Metadata = { title: "Editar paciente" };
@@ -21,11 +21,7 @@ export default async function PaginaEditarPaciente({ params }: { params: Promise
       <h1>Editar paciente</h1>
       <FormularioPaciente
         acao={acao}
-        inicial={{
-          nome: paciente.nome,
-          data_nascimento: paciente.data_nascimento ?? "",
-          observacao: paciente.observacao ?? "",
-        }}
+        inicial={paraFormulario(paciente)}
         textoBotao="Salvar alterações"
         voltarPara={`/pacientes/${id}`}
       />

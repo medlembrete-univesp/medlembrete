@@ -57,7 +57,7 @@ conhecida, não um defeito.
 - Erros aparecem junto do campo, em texto, e são anunciados pelo leitor de tela.
 
 ### RF02 — CEP automático (ViaCEP)
-- Ao sair do campo CEP com 8 dígitos, o JavaScript chama `https://viacep.com.br/ws/{cep}/json/` e preenche cidade e UF.
+- No cadastro do profissional e no cadastro do paciente: ao sair do campo CEP com 8 dígitos, o JavaScript chama `https://viacep.com.br/ws/{cep}/json/` e preenche cidade e UF (e, no paciente, logradouro e bairro).
 - CEP inexistente (`"erro": true`) ou falha de rede: mensagem clara e os campos continuam editáveis à mão. O cadastro nunca depende da API.
 
 ### RF03 — Login e logout
@@ -65,7 +65,7 @@ conhecida, não um defeito.
 - Todas as páginas, exceto login e cadastro, exigem login.
 
 ### RF04 — Cadastro de paciente e de medicamento
-- Paciente: nome (obrigatório), data de nascimento e observações (opcionais). Medicamentos são cadastrados dentro de um paciente.
+- Paciente: nome (obrigatório); data de nascimento, endereço (CEP, logradouro, número, bairro, cidade, UF) e observações (opcionais). O CEP preenche o endereço pela ViaCEP (RF02). Medicamentos são cadastrados dentro de um paciente.
 - Medicamento: nome (obrigatório), dose em texto livre (ex.: "1 comprimido de 50 mg"), observação (opcional).
 - Um ou mais horários (HH:MM), cada um com os dias da semana marcados em checkboxes. Botão "Adicionar horário" na própria tela.
 - Pelo menos um horário e um dia são obrigatórios.
@@ -154,6 +154,12 @@ Cadeia de posse, usada pela RLS: profissional → paciente → medicamento → h
 | usuario_id | uuid | FK → auth.users.id (o profissional) |
 | nome | text(120) | obrigatório |
 | data_nascimento | date | opcional |
+| cep | text(8) | só dígitos, opcional |
+| logradouro | text(150) | opcional |
+| numero | text(20) | opcional |
+| bairro | text(100) | opcional |
+| cidade | text(100) | opcional |
+| uf | text(2) | opcional |
 | observacao | text(255) | opcional |
 | ativo | boolean | padrão: true |
 | criado_em | timestamptz | padrão: now() |

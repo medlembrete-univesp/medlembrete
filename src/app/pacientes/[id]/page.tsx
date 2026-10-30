@@ -6,7 +6,8 @@ import { idDaRota } from "@/lib/dados/contexto";
 import { listarMedicamentosDoPaciente } from "@/lib/dados/medicamentos";
 import { obterPaciente } from "@/lib/dados/pacientes";
 import { agora, dataBR, NOMES_DIAS } from "@/lib/servicos";
-import { idadeEm } from "@/lib/validacao-paciente";
+import { enderecoResumido, idadeEm } from "@/lib/validacao-paciente";
+import { formatarCep } from "@/lib/viacep";
 
 export const dynamic = "force-dynamic";
 
@@ -61,6 +62,12 @@ export default async function PaginaPaciente({ params }: Props) {
             ? `Nascimento: ${dataBR(paciente.data_nascimento)}${idade !== null ? ` (${idade} anos)` : ""}`
             : "Data de nascimento não informada"}
         </p>
+        {(paciente.cep || paciente.logradouro || paciente.cidade) && (
+          <p>
+            <strong>Endereço:</strong> {enderecoResumido(paciente)}
+            {paciente.cep ? ` — CEP ${formatarCep(paciente.cep)}` : ""}
+          </p>
+        )}
         {paciente.observacao && <p>{paciente.observacao}</p>}
       </div>
 

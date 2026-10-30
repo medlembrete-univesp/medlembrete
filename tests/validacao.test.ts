@@ -61,7 +61,15 @@ describe("consultarCep (RF02)", () => {
 
   it("preenche cidade e UF quando a ViaCEP responde", async () => {
     const r = await consultarCep("01001-000", fakeFetch({ localidade: "São Paulo", uf: "SP" }));
-    expect(r).toEqual({ ok: true, cidade: "São Paulo", uf: "SP" });
+    expect(r).toEqual({ ok: true, cidade: "São Paulo", uf: "SP", logradouro: "", bairro: "" });
+  });
+
+  it("devolve logradouro e bairro quando a ViaCEP informa", async () => {
+    const r = await consultarCep(
+      "01001000",
+      fakeFetch({ localidade: "São Paulo", uf: "sp", logradouro: "Praça da Sé", bairro: "Sé" }),
+    );
+    expect(r).toEqual({ ok: true, cidade: "São Paulo", uf: "SP", logradouro: "Praça da Sé", bairro: "Sé" });
   });
 
   it("CEP inexistente devolve mensagem clara", async () => {

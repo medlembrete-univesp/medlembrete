@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState } from "react";
 import type { Erros } from "@/lib/validacao";
 import type { CampoPaciente, DadosPaciente } from "@/lib/validacao-paciente";
+import { CamposEndereco } from "./CamposEndereco";
 
 export interface EstadoPaciente {
   erros: Erros<CampoPaciente>;
@@ -78,6 +79,18 @@ export function FormularioPaciente({
         />
         <Erro id="erro-data_nascimento" texto={estado.erros.data_nascimento} />
       </div>
+
+      <CamposEndereco
+        inicial={{
+          cep: estado.valores.cep,
+          logradouro: estado.valores.logradouro,
+          numero: estado.valores.numero,
+          bairro: estado.valores.bairro,
+          cidade: estado.valores.cidade,
+          uf: estado.valores.uf,
+        }}
+        erros={estado.erros}
+      />
 
       <div className="campo">
         <label htmlFor="observacao">Observações (opcional)</label>

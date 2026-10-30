@@ -6,16 +6,43 @@ export interface Paciente {
   nome: string;
   data_nascimento: string | null;
   observacao: string | null;
+  cep: string | null;
+  logradouro: string | null;
+  numero: string | null;
+  bairro: string | null;
+  cidade: string | null;
+  uf: string | null;
   criado_em: string;
 }
 
-const COLUNAS = "id, nome, data_nascimento, observacao, criado_em";
+const COLUNAS = "id, nome, data_nascimento, observacao, cep, logradouro, numero, bairro, cidade, uf, criado_em";
 
 function paraBanco(d: DadosPaciente) {
   return {
     nome: d.nome,
     data_nascimento: d.data_nascimento || null,
     observacao: d.observacao || null,
+    cep: d.cep || null,
+    logradouro: d.logradouro || null,
+    numero: d.numero || null,
+    bairro: d.bairro || null,
+    cidade: d.cidade || null,
+    uf: d.uf || null,
+  };
+}
+
+/** Converte a linha do banco nos valores do formulário (strings vazias no lugar de null). */
+export function paraFormulario(p: Paciente): DadosPaciente {
+  return {
+    nome: p.nome,
+    data_nascimento: p.data_nascimento ?? "",
+    observacao: p.observacao ?? "",
+    cep: p.cep ?? "",
+    logradouro: p.logradouro ?? "",
+    numero: p.numero ?? "",
+    bairro: p.bairro ?? "",
+    cidade: p.cidade ?? "",
+    uf: p.uf ?? "",
   };
 }
 

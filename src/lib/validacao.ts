@@ -62,7 +62,7 @@ export function validarCadastro(d: DadosCadastro): Erros<CampoCadastro> {
 
   if (d.cep && !/^\d{8}$/.test(d.cep)) erros.cep = "O CEP deve ter 8 números.";
   if (d.cidade.length > 100) erros.cidade = "A cidade deve ter no máximo 100 caracteres.";
-  if (d.uf && !/^[A-Z]{2}$/.test(d.uf)) erros.uf = "A UF deve ter 2 letras (ex.: SP).";
+  if (d.uf && !(UFS as readonly string[]).includes(d.uf)) erros.uf = "Informe uma UF válida (ex.: SP).";
   return erros;
 }
 

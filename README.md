@@ -41,8 +41,9 @@ Abra <http://localhost:3000>. Sem sessão, o app redireciona para `/login`.
 ## Banco de dados
 
 Execute, em ordem, os arquivos de [supabase/migrations/](supabase/migrations/) no **SQL Editor**
-do Supabase: `0001_schema.sql` (tabelas, trigger de perfil e RLS) e `0002_pacientes.sql`
-(tabela de pacientes e RLS pela cadeia profissional → paciente). Cada um roda uma vez.
+do Supabase: `0001_schema.sql` (tabelas, trigger de perfil e RLS), `0002_pacientes.sql`
+(tabela de pacientes e RLS pela cadeia profissional → paciente) e `0003_endereco_paciente.sql`
+(endereço do paciente). Cada um roda uma vez.
 
 No painel do Supabase, em **Authentication → Sign In / Providers → Email**, desligue
 **Confirm email**: o MVP não envia e-mails.
