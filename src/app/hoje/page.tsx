@@ -51,7 +51,7 @@ export default async function PaginaHoje({ searchParams }: Props) {
               Mostrando só <strong>{pacienteSelecionado.nome}</strong>. <Link href="/hoje">Ver todos</Link>.
             </p>
           )}
-          <DosesDoDia dosesIniciais={doses} data={momento.data} pacienteId={pacienteId} />
+          <DosesDoDia dosesIniciais={doses} data={momento.data} horaInicial={momento.hora} pacienteId={pacienteId} />
         </>
       )}
     </>

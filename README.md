@@ -81,7 +81,7 @@ docs/               guias de deploy e de desenvolvimento
 | 3. ViaCEP no cadastro | feito |
 | 4. CRUD de pacientes e de medicamentos | feito |
 | 5. Página do dia, "Tomei", API de doses, histórico | feito |
-| 6. Lembretes | a fazer |
+| 6. Lembretes na tela (modal, som, notificação) | feito |
 | 7. Dashboard | a fazer |
 | 8. Acessibilidade (Lighthouse, NVDA) | base pronta; auditoria a fazer |
 | 9. Testes finais, deploy, celular | a fazer |
