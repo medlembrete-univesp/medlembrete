@@ -8,16 +8,13 @@ export interface Contexto {
   usuario: UsuarioAtual;
 }
 
-/**
- * Cliente Supabase + usuário logado para a camada de dados. Sem sessão, manda
- * para /login (o proxy já faz isso, mas a camada de dados não confia só nele).
- */
-export async function contexto(): Promise<Contexto> {
+/** Cliente Supabase + usuário logado, ou null sem sessão. Base das duas variantes abaixo. */
+export async function contextoOuNulo(): Promise<Contexto | null> {
   const supabase = await criarClienteServidor();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (!user) return null;
   const meta = (user.user_metadata ?? {}) as { nome?: string };
   return {
     supabase,
@@ -29,9 +26,19 @@ export async function contexto(): Promise<Contexto> {
   };
 }
 
-/** Converte o [id] da rota em inteiro positivo, ou null. */
-export function idDaRota(texto: string): number | null {
-  if (!/^\d{1,15}$/.test(texto)) return null;
+/**
+ * Para páginas e Server Actions: sem sessão, manda para /login (o proxy já faz
+ * isso, mas a camada de dados não confia só nele).
+ */
+export async function contexto(): Promise<Contexto> {
+  const ctx = await contextoOuNulo();
+  if (!ctx) redirect("/login");
+  return ctx;
+}
+
+/** Converte o [id] da rota (ou um parâmetro de consulta) em inteiro positivo, ou null. */
+export function idDaRota(texto: string | undefined | null): number | null {
+  if (!texto || !/^\d{1,15}$/.test(texto)) return null;
   const n = Number(texto);
   return n > 0 ? n : null;
 }

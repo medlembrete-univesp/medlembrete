@@ -525,3 +525,79 @@ fieldset {
     grid-template-columns: 1fr;
   }
 }
+
+/* Página do dia */
+.data-hoje {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.filtro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.filtro label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.filtro select,
+.filtro input {
+  font: inherit;
+  min-height: 44px;
+  padding: 0.4rem 0.6rem;
+  border: 2px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--fundo);
+  color: var(--texto);
+}
+.lista-doses {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.dose {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  border-left-width: 8px;
+}
+.dose-pendente {
+  border-left-color: var(--alerta);
+}
+.dose-atrasada {
+  border-left-color: var(--erro);
+}
+.dose-tomada {
+  border-left-color: var(--sucesso);
+}
+.dose-hora {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 5.5rem;
+}
+.dose-hora .hora {
+  font-size: 1.6rem;
+}
+.dose-info p {
+  margin: 0 0 0.2rem;
+}
+.dose-paciente {
+  font-weight: 700;
+  color: var(--texto-suave);
+}
+.dose-medicamento {
+  font-size: 1.1rem;
+}
+@media (max-width: 560px) {
+  .dose {
+    grid-template-columns: 1fr;
+  }
+  .dose-acao .botao {
+    width: 100%;
+  }
+}

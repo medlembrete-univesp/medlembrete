@@ -121,6 +121,8 @@ describe("dosesDoDia (RF06)", () => {
     expect(d).toEqual({
       horario_id: 10,
       hora: "08:00",
+      paciente_id: null,
+      paciente: null,
       medicamento_id: 1,
       medicamento: "Losartana",
       dose: "1 comprimido 50 mg",
@@ -178,6 +180,8 @@ describe("aderencia (RF10)", () => {
       hora: "23:00",
     });
     expect(a).toEqual({
+      paciente_id: null,
+      paciente: null,
       medicamento_id: 1,
       medicamento: "Losartana",
       programadas: 4,

@@ -80,7 +80,7 @@ docs/               guias de deploy e de desenvolvimento
 | 2. Esquema SQL, `agora()`, cadastro, login, logout, layout acessível | feito e testado com o Supabase |
 | 3. ViaCEP no cadastro | feito |
 | 4. CRUD de pacientes e de medicamentos | feito |
-| 5. Página do dia, "Tomei", histórico | serviços puros prontos e testados; páginas a fazer |
+| 5. Página do dia, "Tomei", API de doses, histórico | feito |
 | 6. Lembretes | a fazer |
 | 7. Dashboard | a fazer |
 | 8. Acessibilidade (Lighthouse, NVDA) | base pronta; auditoria a fazer |

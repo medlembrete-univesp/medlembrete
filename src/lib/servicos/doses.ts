@@ -36,6 +36,10 @@ function jaPassou(data: string, hora: string, momento: Momento): boolean {
   return minutosDe(hora) <= minutosDe(momento.hora);
 }
 
+function nomePaciente(m: MedicamentoComHorarios): string {
+  return m.paciente?.nome ?? "";
+}
+
 interface DoseProgramada {
   data: string;
   medicamento: MedicamentoComHorarios;
@@ -44,7 +48,7 @@ interface DoseProgramada {
 
 /**
  * Enumera as doses programadas (medicamento ativo + horário ativo + dia da semana
- * marcado) para cada data do intervalo, em ordem de data e hora.
+ * marcado) para cada data do intervalo, em ordem de data, hora, paciente e medicamento.
  */
 export function dosesProgramadas(
   medicamentos: MedicamentoComHorarios[],
@@ -66,6 +70,7 @@ export function dosesProgramadas(
     doDia.sort(
       (a, b) =>
         a.horario.hora.localeCompare(b.horario.hora) ||
+        nomePaciente(a.medicamento).localeCompare(nomePaciente(b.medicamento), "pt-BR") ||
         a.medicamento.nome.localeCompare(b.medicamento.nome, "pt-BR"),
     );
     saida.push(...doDia);
@@ -92,6 +97,8 @@ export function dosesDoDia(
       return {
         horario_id: horario.id,
         hora: horario.hora,
+        paciente_id: medicamento.paciente?.id ?? null,
+        paciente: medicamento.paciente?.nome ?? null,
         medicamento_id: medicamento.id,
         medicamento: medicamento.nome,
         dose: medicamento.dose,
@@ -136,6 +143,8 @@ export function historico(
       data,
       hora: horario.hora,
       horario_id: horario.id,
+      paciente_id: medicamento.paciente?.id ?? null,
+      paciente: medicamento.paciente?.nome ?? null,
       medicamento_id: medicamento.id,
       medicamento: medicamento.nome,
       dose: medicamento.dose,
@@ -158,6 +167,8 @@ export function historico(
       data: r.data,
       hora: info.hora,
       horario_id: r.horario_id,
+      paciente_id: info.medicamento.paciente?.id ?? null,
+      paciente: info.medicamento.paciente?.nome ?? null,
       medicamento_id: info.medicamento.id,
       medicamento: info.medicamento.nome,
       dose: info.medicamento.dose,
@@ -170,6 +181,7 @@ export function historico(
     (a, b) =>
       b.data.localeCompare(a.data) ||
       a.hora.localeCompare(b.hora) ||
+      (a.paciente ?? "").localeCompare(b.paciente ?? "", "pt-BR") ||
       a.medicamento.localeCompare(b.medicamento, "pt-BR"),
   );
   return linhas;
@@ -192,6 +204,8 @@ export function aderencia(
   for (const m of medicamentos) {
     if (!m.ativo) continue;
     porMedicamento.set(m.id, {
+      paciente_id: m.paciente?.id ?? null,
+      paciente: m.paciente?.nome ?? null,
       medicamento_id: m.id,
       medicamento: m.nome,
       programadas: 0,
@@ -215,6 +229,10 @@ export function aderencia(
   for (const a of saida) {
     a.percentual = a.programadas === 0 ? 0 : Math.round((a.tomadas / a.programadas) * 100);
   }
-  saida.sort((a, b) => a.medicamento.localeCompare(b.medicamento, "pt-BR"));
+  saida.sort(
+    (a, b) =>
+      (a.paciente ?? "").localeCompare(b.paciente ?? "", "pt-BR") ||
+      a.medicamento.localeCompare(b.medicamento, "pt-BR"),
+  );
   return saida;
 }

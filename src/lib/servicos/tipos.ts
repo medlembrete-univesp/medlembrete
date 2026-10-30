@@ -9,6 +9,11 @@ export interface Horario {
   ativo: boolean;
 }
 
+export interface PacienteResumo {
+  id: number;
+  nome: string;
+}
+
 export interface MedicamentoComHorarios {
   id: number;
   nome: string;
@@ -16,6 +21,8 @@ export interface MedicamentoComHorarios {
   observacao?: string | null;
   ativo: boolean;
   horarios: Horario[];
+  /** Paciente dono do medicamento (ausente só em testes antigos). */
+  paciente?: PacienteResumo | null;
 }
 
 export interface RegistroDose {
@@ -31,6 +38,8 @@ export type StatusDose = "pendente" | "tomada" | "atrasada";
 export interface DoseDoDia {
   horario_id: number;
   hora: string;
+  paciente_id: number | null;
+  paciente: string | null;
   medicamento_id: number;
   medicamento: string;
   dose: string;
@@ -45,6 +54,8 @@ export interface LinhaHistorico {
   data: string;
   hora: string;
   horario_id: number;
+  paciente_id: number | null;
+  paciente: string | null;
   medicamento_id: number;
   medicamento: string;
   dose: string;
@@ -53,6 +64,8 @@ export interface LinhaHistorico {
 }
 
 export interface Aderencia {
+  paciente_id: number | null;
+  paciente: string | null;
   medicamento_id: number;
   medicamento: string;
   programadas: number;
