@@ -12,7 +12,7 @@ Tudo no plano gratuito. Leva uns 20 minutos.
      `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
    - Nunca use a **secret/service_role** no app.
 3. **SQL Editor → New query**: cole todo o arquivo `supabase/migrations/0001_schema.sql` e
-   clique em **Run**. Repita com `0002_pacientes.sql` e `0003_endereco_paciente.sql`. Em **Table Editor** devem aparecer
+   clique em **Run**. Repita com `0002_pacientes.sql`, `0003_endereco_paciente.sql` e `0004_horario_criado_em.sql`. Em **Table Editor** devem aparecer
    `perfil`, `paciente`, `medicamento`, `horario` e `registro_dose`.
 4. **Authentication → Sign In / Providers → Email**: desligue **Confirm email**. O MVP não
    envia e-mail; assim o cadastro já entra logado.

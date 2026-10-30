@@ -7,6 +7,8 @@ export interface Horario {
   /** dígitos 0..6, 0 = segunda */
   dias_semana: string;
   ativo: boolean;
+  /** Primeiro dia (AAAA-MM-DD, local) em que este horário vale; antes disso não há dose. */
+  inicio?: string | null;
 }
 
 export interface PacienteResumo {
@@ -23,6 +25,8 @@ export interface MedicamentoComHorarios {
   horarios: Horario[];
   /** Paciente dono do medicamento (ausente só em testes antigos). */
   paciente?: PacienteResumo | null;
+  /** Primeiro dia (AAAA-MM-DD, local) em que o medicamento existe; antes disso não há dose. */
+  inicio?: string | null;
 }
 
 export interface RegistroDose {

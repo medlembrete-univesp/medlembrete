@@ -1,4 +1,4 @@
-import type { Horario, MedicamentoComHorarios, RegistroDose } from "@/lib/servicos";
+import { agora, type Horario, type MedicamentoComHorarios, type RegistroDose } from "@/lib/servicos";
 import { contexto, type Contexto } from "./contexto";
 
 interface LinhaPaciente {
@@ -11,8 +11,16 @@ interface LinhaPaciente {
     dose: string;
     observacao: string | null;
     ativo: boolean;
-    horario: Horario[];
+    criado_em: string;
+    horario: (Horario & { criado_em?: string | null })[];
   }[];
+}
+
+/** Instante ISO → AAAA-MM-DD no fuso de Brasília (dia em que o registro passou a existir). */
+function dataLocalDe(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? null : agora(d).data;
 }
 
 /**
@@ -27,7 +35,9 @@ export async function carregarProgramacao(
   const { supabase, usuario } = ctx ?? (await contexto());
   let consulta = supabase
     .from("paciente")
-    .select("id, nome, ativo, medicamento(id, nome, dose, observacao, ativo, horario(id, hora, dias_semana, ativo))")
+    .select(
+      "id, nome, ativo, medicamento(id, nome, dose, observacao, ativo, criado_em, horario(id, hora, dias_semana, ativo, criado_em))",
+    )
     .eq("usuario_id", usuario.id)
     .eq("ativo", true);
   if (pacienteId) consulta = consulta.eq("id", pacienteId);
@@ -43,7 +53,14 @@ export async function carregarProgramacao(
         dose: m.dose,
         observacao: m.observacao,
         ativo: m.ativo,
-        horarios: m.horario ?? [],
+        inicio: dataLocalDe(m.criado_em),
+        horarios: (m.horario ?? []).map((h) => ({
+          id: h.id,
+          hora: h.hora,
+          dias_semana: h.dias_semana,
+          ativo: h.ativo,
+          inicio: dataLocalDe(h.criado_em),
+        })),
         paciente: { id: p.id, nome: p.nome },
       });
     }

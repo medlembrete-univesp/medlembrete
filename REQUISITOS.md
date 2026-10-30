@@ -94,7 +94,7 @@ conhecida, não um defeito.
 
 ### RF09 — Histórico
 - Tabela das doses dos últimos 7 dias (filtro opcional por período): data, horário previsto, medicamento, status e hora em que foi tomada.
-- Doses programadas sem registro aparecem como "Não tomada".
+- Doses programadas sem registro aparecem como "Não tomada". Dias anteriores à criação do medicamento ou do horário não geram doses (não existiam para serem tomadas).
 
 ### RF10 — Dashboard de aderência
 - Aderência = doses tomadas ÷ doses programadas até o momento, em %, por paciente e medicamento, nos últimos 7 ou 30 dias.
@@ -183,6 +183,7 @@ Cadeia de posse, usada pela RLS: profissional → paciente → medicamento → h
 | hora | text(5) | formato HH:MM |
 | dias_semana | text(7) | dígitos de 0 a 6 (0 = segunda); ex.: `01234` = seg a sex |
 | ativo | boolean | padrão: true |
+| criado_em | timestamptz | padrão: now(); doses só são programadas a partir deste dia |
 
 ### registro_dose
 | Campo | Tipo | Regra |

@@ -48,7 +48,8 @@ interface DoseProgramada {
 
 /**
  * Enumera as doses programadas (medicamento ativo + horário ativo + dia da semana
- * marcado) para cada data do intervalo, em ordem de data, hora, paciente e medicamento.
+ * marcado + data a partir da criação) para cada data do intervalo, em ordem de data,
+ * hora, paciente e medicamento.
  */
 export function dosesProgramadas(
   medicamentos: MedicamentoComHorarios[],
@@ -61,8 +62,10 @@ export function dosesProgramadas(
     const doDia: DoseProgramada[] = [];
     for (const medicamento of medicamentos) {
       if (!medicamento.ativo) continue;
+      if (medicamento.inicio && data < medicamento.inicio) continue;
       for (const horario of medicamento.horarios) {
         if (!horario.ativo) continue;
+        if (horario.inicio && data < horario.inicio) continue;
         if (!horario.dias_semana.includes(dia)) continue;
         doDia.push({ data, medicamento, horario });
       }

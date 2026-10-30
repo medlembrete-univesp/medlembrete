@@ -38,6 +38,36 @@ describe("periodoValido (RF09)", () => {
   });
 });
 
+describe("doses só a partir da criação (RF09, RF10)", () => {
+  const med: MedicamentoComHorarios = {
+    id: 1, nome: "Losartana", dose: "50 mg", ativo: true, inicio: "2026-10-28",
+    paciente: { id: 10, nome: "Maria" },
+    horarios: [
+      { id: 100, hora: "08:00", dias_semana: "0123456", ativo: true, inicio: "2026-10-28" },
+      { id: 101, hora: "20:00", dias_semana: "0123456", ativo: true, inicio: HOJE }, // horário acrescentado hoje
+    ],
+  };
+
+  it("histórico ignora dias anteriores à criação do medicamento e do horário", () => {
+    const h = historico([med], [], "2026-10-23", HOJE, { data: HOJE, hora: "23:00" });
+    expect(h.map((l) => [l.data, l.hora])).toEqual([
+      [HOJE, "08:00"],
+      [HOJE, "20:00"],
+      ["2026-10-28", "08:00"],
+    ]);
+  });
+
+  it("aderência conta só as doses que existiam", () => {
+    const [a] = aderencia([med], [], "2026-10-01", HOJE, { data: HOJE, hora: "23:00" });
+    expect(a.programadas).toBe(3);
+  });
+
+  it("sem `inicio` (dados antigos) o comportamento continua o mesmo", () => {
+    const semInicio = { ...med, inicio: undefined, horarios: med.horarios.map((h) => ({ ...h, inicio: undefined })) };
+    expect(historico([semInicio], [], "2026-10-28", HOJE, { data: HOJE, hora: "23:00" })).toHaveLength(4);
+  });
+});
+
 describe("serviços com paciente (RF06, RF09, RF10)", () => {
   const maria: MedicamentoComHorarios = {
     id: 1, nome: "Losartana", dose: "50 mg", ativo: true,
