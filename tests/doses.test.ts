@@ -94,3 +94,18 @@ describe("serviços com paciente (RF06, RF09, RF10)", () => {
     expect(a.map((x) => [x.paciente, x.percentual])).toEqual([["João", 0], ["Maria", 100]]);
   });
 });
+
+describe("aderenciaPorPaciente", () => {
+  it("soma por paciente e calcula o percentual sem dividir por zero", async () => {
+    const { aderenciaPorPaciente } = await import("@/lib/servicos");
+    const r = aderenciaPorPaciente([
+      { paciente_id: 1, paciente: "Maria", medicamento_id: 1, medicamento: "A", programadas: 2, tomadas: 2, percentual: 100 },
+      { paciente_id: 1, paciente: "Maria", medicamento_id: 2, medicamento: "B", programadas: 2, tomadas: 1, percentual: 50 },
+      { paciente_id: 2, paciente: "João", medicamento_id: 3, medicamento: "C", programadas: 0, tomadas: 0, percentual: 0 },
+    ]);
+    expect(r).toEqual([
+      { paciente_id: 2, paciente: "João", programadas: 0, tomadas: 0, percentual: 0, medicamentos: 1 },
+      { paciente_id: 1, paciente: "Maria", programadas: 4, tomadas: 3, percentual: 75, medicamentos: 2 },
+    ]);
+  });
+});

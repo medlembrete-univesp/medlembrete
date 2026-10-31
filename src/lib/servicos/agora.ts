@@ -119,3 +119,8 @@ export const NOMES_DIAS_LONGOS = [
   "sábado",
   "domingo",
 ] as const;
+
+/** "Ana Beatriz Souza" → "Ana". */
+export function primeiroNome(nome: string): string {
+  return nome.trim().split(/\s+/)[0] ?? nome;
+}

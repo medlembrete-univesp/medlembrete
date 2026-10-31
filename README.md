@@ -96,6 +96,7 @@ docs/               guias de deploy e de desenvolvimento
 | 6. Lembretes na tela (modal, som, notificação) | feito |
 | 7. Dashboard de aderência (Chart.js + tabela) | feito |
 | 8. Acessibilidade | Lighthouse 100 em acessibilidade e boas práticas nas 7 páginas principais; contraste ≥ 4,5:1 nos dois temas; teste com NVDA a fazer |
-| 9. Deploy na Vercel, testes em produção | feito; teste no celular e com NVDA a fazer |
+| 9. Deploy na Vercel, testes em produção | feito; testado no celular; NVDA a fazer |
+| 10. Redesign visual (tokens, Figtree, sidebar, cartões, alto contraste) | feito |
 
 Link público: <https://med-lembrete.vercel.app>

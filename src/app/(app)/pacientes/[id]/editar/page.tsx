@@ -18,13 +18,17 @@ export default async function PaginaEditarPaciente({ params }: { params: Promise
 
   return (
     <>
-      <h1>Editar paciente</h1>
+      <div className="pagina-cabecalho">
+        <h1>Editar paciente</h1>
+      </div>
+      <div className="cartao cartao-formulario">
       <FormularioPaciente
         acao={acao}
         inicial={paraFormulario(paciente)}
         textoBotao="Salvar alterações"
         voltarPara={`/pacientes/${id}`}
       />
+      </div>
     </>
   );
 }

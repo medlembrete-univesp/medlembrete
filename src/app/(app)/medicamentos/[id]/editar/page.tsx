@@ -20,11 +20,16 @@ export default async function PaginaEditarMedicamento({ params }: { params: Prom
 
   return (
     <>
-      <p>
+      <p className="voltar">
         <Link href={`/pacientes/${m.paciente.id}`}>← {m.paciente.nome}</Link>
       </p>
-      <h1>Editar medicamento</h1>
-      <p className="texto-suave">Paciente: {m.paciente.nome}</p>
+      <div className="pagina-cabecalho">
+        <div>
+          <h1>Editar medicamento</h1>
+          <p className="texto-suave">Paciente: {m.paciente.nome}</p>
+        </div>
+      </div>
+      <div className="cartao cartao-formulario">
       <FormularioMedicamento
         acao={acao}
         inicial={{
@@ -36,6 +41,7 @@ export default async function PaginaEditarMedicamento({ params }: { params: Prom
         textoBotao="Salvar alterações"
         voltarPara={`/pacientes/${m.paciente.id}`}
       />
+      </div>
     </>
   );
 }

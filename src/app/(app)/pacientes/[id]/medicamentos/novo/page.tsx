@@ -20,17 +20,23 @@ export default async function PaginaNovoMedicamento({ params }: { params: Promis
 
   return (
     <>
-      <p>
+      <p className="voltar">
         <Link href={`/pacientes/${id}`}>← {paciente.nome}</Link>
       </p>
-      <h1>Novo medicamento</h1>
-      <p className="texto-suave">Paciente: {paciente.nome}</p>
+      <div className="pagina-cabecalho">
+        <div>
+          <h1>Novo medicamento</h1>
+          <p className="texto-suave">Paciente: {paciente.nome}</p>
+        </div>
+      </div>
+      <div className="cartao cartao-formulario">
       <FormularioMedicamento
         acao={acao}
         inicial={{ nome: "", dose: "", observacao: "", horarios: [] }}
         textoBotao="Salvar medicamento"
         voltarPara={`/pacientes/${id}`}
       />
+      </div>
     </>
   );
 }

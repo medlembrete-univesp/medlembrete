@@ -1,5 +1,7 @@
 "use client";
 
+import { ErroCampo } from "@/components/ui/CampoTexto";
+
 import Link from "next/link";
 import { useActionState } from "react";
 import type { Erros } from "@/lib/validacao";
@@ -14,14 +16,6 @@ export interface EstadoPaciente {
 
 export type AcaoPaciente = (anterior: EstadoPaciente, fd: FormData) => Promise<EstadoPaciente>;
 
-function Erro({ id, texto }: { id: string; texto?: string }) {
-  if (!texto) return null;
-  return (
-    <p id={id} className="erro-campo" role="alert">
-      {texto}
-    </p>
-  );
-}
 
 export function FormularioPaciente({
   acao,
@@ -63,7 +57,7 @@ export function FormularioPaciente({
           aria-invalid={estado.erros.nome ? true : undefined}
           aria-describedby={estado.erros.nome ? "erro-nome" : undefined}
         />
-        <Erro id="erro-nome" texto={estado.erros.nome} />
+        <ErroCampo id="erro-nome" texto={estado.erros.nome} />
       </div>
 
       <div className="campo">
@@ -77,7 +71,7 @@ export function FormularioPaciente({
           aria-invalid={estado.erros.data_nascimento ? true : undefined}
           aria-describedby={estado.erros.data_nascimento ? "erro-data_nascimento" : undefined}
         />
-        <Erro id="erro-data_nascimento" texto={estado.erros.data_nascimento} />
+        <ErroCampo id="erro-data_nascimento" texto={estado.erros.data_nascimento} />
       </div>
 
       <CamposEndereco
@@ -106,7 +100,7 @@ export function FormularioPaciente({
         <p id="ajuda-observacao" className="ajuda">
           Alergias, cuidados, contato do responsável. Até 255 caracteres.
         </p>
-        <Erro id="erro-observacao" texto={estado.erros.observacao} />
+        <ErroCampo id="erro-observacao" texto={estado.erros.observacao} />
       </div>
 
       <div className="acoes-linha">

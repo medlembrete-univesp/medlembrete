@@ -239,3 +239,35 @@ export function aderencia(
   );
   return saida;
 }
+
+export interface AderenciaPaciente {
+  paciente_id: number | null;
+  paciente: string | null;
+  programadas: number;
+  tomadas: number;
+  percentual: number;
+  medicamentos: number;
+}
+
+/** Agrupa a aderência por paciente (soma de programadas e tomadas dos medicamentos). */
+export function aderenciaPorPaciente(itens: Aderencia[]): AderenciaPaciente[] {
+  const mapa = new Map<number | null, AderenciaPaciente>();
+  for (const a of itens) {
+    const acc = mapa.get(a.paciente_id) ?? {
+      paciente_id: a.paciente_id,
+      paciente: a.paciente,
+      programadas: 0,
+      tomadas: 0,
+      percentual: 0,
+      medicamentos: 0,
+    };
+    acc.programadas += a.programadas;
+    acc.tomadas += a.tomadas;
+    acc.medicamentos += 1;
+    mapa.set(a.paciente_id, acc);
+  }
+  const saida = [...mapa.values()];
+  for (const p of saida) p.percentual = p.programadas === 0 ? 0 : Math.round((p.tomadas / p.programadas) * 100);
+  saida.sort((a, b) => (a.paciente ?? "").localeCompare(b.paciente ?? "", "pt-BR"));
+  return saida;
+}

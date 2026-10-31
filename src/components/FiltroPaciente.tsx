@@ -30,7 +30,7 @@ export function FiltroPaciente({
           </option>
         ))}
       </select>
-      <button type="submit" className="botao botao-secundario">
+      <button type="submit" className="botao botao-secundario botao-pequeno">
         Filtrar
       </button>
     </form>

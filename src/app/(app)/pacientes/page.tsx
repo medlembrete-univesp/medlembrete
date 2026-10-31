@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Avatar } from "@/components/ui/Avatar";
+import { EstadoVazio } from "@/components/ui/EstadoVazio";
+import { contexto } from "@/lib/dados/contexto";
+import { carregarProgramacao } from "@/lib/dados/doses";
 import { listarPacientes } from "@/lib/dados/pacientes";
-import { agora, dataBR } from "@/lib/servicos";
+import { agora } from "@/lib/servicos";
 import { idadeEm } from "@/lib/validacao-paciente";
 
 export const metadata: Metadata = { title: "Pacientes" };
 export const dynamic = "force-dynamic";
 
+/** Lista de pacientes em cartões (spec 6.4), com os medicamentos e horários de cada um. */
 export default async function PaginaPacientes() {
-  const pacientes = await listarPacientes();
+  const ctx = await contexto();
+  const [pacientes, medicamentos] = await Promise.all([listarPacientes(), carregarProgramacao(ctx)]);
   const hoje = agora().data;
 
   return (
     <>
-      <div className="titulo-com-acao">
+      <div className="pagina-cabecalho">
         <h1>Pacientes</h1>
         <Link href="/pacientes/novo" className="botao">
           + Novo paciente
@@ -21,37 +27,53 @@ export default async function PaginaPacientes() {
       </div>
 
       {pacientes.length === 0 ? (
-        <div className="cartao">
-          <p>Você ainda não cadastrou nenhum paciente.</p>
-          <p>
-            Comece por <Link href="/pacientes/novo">cadastrar um paciente</Link>; depois adicione os
-            medicamentos dele.
-          </p>
-        </div>
+        <EstadoVazio titulo="Você ainda não cadastrou nenhum paciente.">
+          Comece por <Link href="/pacientes/novo">cadastrar um paciente</Link>; depois adicione os medicamentos dele.
+        </EstadoVazio>
       ) : (
-        <ul className="lista-cartoes" aria-label="Lista de pacientes">
+        <ul className="grade grade-cartoes lista-sem-marcas" aria-label="Lista de pacientes">
           {pacientes.map((p) => {
             const idade = idadeEm(p.data_nascimento, hoje);
+            const meds = medicamentos.filter((m) => m.paciente?.id === p.id && m.ativo);
+            const local = [p.cidade, p.uf].filter(Boolean).join("/");
+            const subtitulo = [idade !== null ? `${idade} anos` : null, local || null].filter(Boolean).join(" · ");
             return (
-              <li key={p.id} className="cartao cartao-item">
-                <div>
-                  <h2 className="cartao-titulo">
-                    <Link href={`/pacientes/${p.id}`}>{p.nome}</Link>
-                  </h2>
-                  <p className="texto-suave">
-                    {p.data_nascimento
-                      ? `Nascimento: ${dataBR(p.data_nascimento)}${idade !== null ? ` (${idade} anos)` : ""}`
-                      : "Data de nascimento não informada"}
-                  </p>
-                  {(p.cidade || p.uf) && <p className="texto-suave">{[p.cidade, p.uf].filter(Boolean).join("/")}</p>}
-                  {p.observacao && <p>{p.observacao}</p>}
+              <li key={p.id} className="cartao cartao-paciente">
+                <div className="cartao-paciente-topo">
+                  <Avatar nome={p.nome} tamanho={52} />
+                  <div className="cartao-paciente-texto">
+                    <h2>
+                      <Link href={`/pacientes/${p.id}`}>{p.nome}</Link>
+                    </h2>
+                    {subtitulo && <p className="texto-suave">{subtitulo}</p>}
+                  </div>
                 </div>
+
+                {meds.length === 0 ? (
+                  <p className="texto-suave">Nenhum medicamento cadastrado.</p>
+                ) : (
+                  <ul className="lista-medicamentos-resumo" aria-label={`Medicamentos de ${p.nome}`}>
+                    {meds.map((m) => (
+                      <li key={m.id} className="medicamento-resumo">
+                        <span className="medicamento-resumo-nome">{m.nome}</span>
+                        <span className="texto-suave hora">
+                          {m.horarios
+                            .filter((h) => h.ativo)
+                            .map((h) => h.hora)
+                            .sort()
+                            .join(" · ")}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
                 <div className="acoes-linha">
-                  <Link href={`/pacientes/${p.id}`} className="botao botao-secundario">
-                    Medicamentos
+                  <Link href={`/pacientes/${p.id}/medicamentos/novo`} className="botao">
+                    + Medicamento
                   </Link>
                   <Link href={`/pacientes/${p.id}/editar`} className="botao botao-secundario">
-                    Editar
+                    Editar paciente
                   </Link>
                 </div>
               </li>

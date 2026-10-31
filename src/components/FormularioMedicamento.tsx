@@ -1,5 +1,7 @@
 "use client";
 
+import { ErroCampo } from "@/components/ui/CampoTexto";
+
 import Link from "next/link";
 import { useActionState, useId, useState } from "react";
 import { NOMES_DIAS, NOMES_DIAS_LONGOS } from "@/lib/servicos";
@@ -21,14 +23,6 @@ interface LinhaHorario {
   dias: boolean[];
 }
 
-function Erro({ id, texto }: { id: string; texto?: string }) {
-  if (!texto) return null;
-  return (
-    <p id={id} className="erro-campo" role="alert">
-      {texto}
-    </p>
-  );
-}
 
 function paraLinhas(valores: DadosMedicamento): LinhaHorario[] {
   if (valores.horarios.length === 0) return [novaLinha(0)];
@@ -108,7 +102,7 @@ export function FormularioMedicamento({
           aria-invalid={estado.erros.nome ? true : undefined}
           aria-describedby={estado.erros.nome ? "erro-nome" : undefined}
         />
-        <Erro id="erro-nome" texto={estado.erros.nome} />
+        <ErroCampo id="erro-nome" texto={estado.erros.nome} />
       </div>
 
       <div className="campo">
@@ -125,7 +119,7 @@ export function FormularioMedicamento({
           aria-invalid={estado.erros.dose ? true : undefined}
           aria-describedby={estado.erros.dose ? "erro-dose" : undefined}
         />
-        <Erro id="erro-dose" texto={estado.erros.dose} />
+        <ErroCampo id="erro-dose" texto={estado.erros.dose} />
       </div>
 
       <div className="campo">
@@ -141,12 +135,12 @@ export function FormularioMedicamento({
           aria-invalid={estado.erros.observacao ? true : undefined}
           aria-describedby={estado.erros.observacao ? "erro-observacao" : undefined}
         />
-        <Erro id="erro-observacao" texto={estado.erros.observacao} />
+        <ErroCampo id="erro-observacao" texto={estado.erros.observacao} />
       </div>
 
       <fieldset className="campo horarios" aria-describedby={estado.erros.horarios ? "erro-horarios" : undefined}>
         <legend className="legenda">Horários e dias da semana</legend>
-        <Erro id="erro-horarios" texto={estado.erros.horarios} />
+        <ErroCampo id="erro-horarios" texto={estado.erros.horarios} />
         <input type="hidden" name="qtd_horarios" value={linhas.length} />
 
         {linhas.map((linha, i) => {
@@ -207,7 +201,7 @@ export function FormularioMedicamento({
                   );
                 })}
               </div>
-              <Erro id={idErro} texto={erro} />
+              <ErroCampo id={idErro} texto={erro} />
             </fieldset>
           );
         })}

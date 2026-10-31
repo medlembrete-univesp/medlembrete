@@ -1,5 +1,7 @@
 "use client";
 
+import { ErroCampo } from "@/components/ui/CampoTexto";
+
 import { useId, useState } from "react";
 import type { Erros } from "@/lib/validacao";
 import { UFS } from "@/lib/validacao";
@@ -16,14 +18,6 @@ export interface ValoresEndereco {
 
 type CampoEndereco = keyof ValoresEndereco;
 
-function Erro({ id, texto }: { id: string; texto?: string }) {
-  if (!texto) return null;
-  return (
-    <p id={id} className="erro-campo" role="alert">
-      {texto}
-    </p>
-  );
-}
 
 /**
  * RF02 — bloco de endereço com CEP consultado na ViaCEP ao sair do campo.
@@ -93,7 +87,7 @@ export function CamposEndereco({
         <p id="ajuda-cep" className="ajuda">
           Só números. Ao sair do campo, o endereço é preenchido automaticamente pela ViaCEP.
         </p>
-        <Erro id="erro-cep" texto={erros.cep} />
+        <ErroCampo id="erro-cep" texto={erros.cep} />
         <p id={idAviso} className={aviso && !aviso.ok ? "erro-campo" : "ajuda"} role="status">
           {buscando
             ? "Consultando o CEP…"
@@ -119,7 +113,7 @@ export function CamposEndereco({
             aria-invalid={erros.logradouro ? true : undefined}
             aria-describedby={erros.logradouro ? "erro-logradouro" : undefined}
           />
-          <Erro id="erro-logradouro" texto={erros.logradouro} />
+          <ErroCampo id="erro-logradouro" texto={erros.logradouro} />
         </div>
         <div className="campo">
           <label htmlFor="numero">Número</label>
@@ -133,7 +127,7 @@ export function CamposEndereco({
             aria-invalid={erros.numero ? true : undefined}
             aria-describedby={erros.numero ? "erro-numero" : undefined}
           />
-          <Erro id="erro-numero" texto={erros.numero} />
+          <ErroCampo id="erro-numero" texto={erros.numero} />
         </div>
       </div>
 
@@ -150,7 +144,7 @@ export function CamposEndereco({
           aria-invalid={erros.bairro ? true : undefined}
           aria-describedby={erros.bairro ? "erro-bairro" : undefined}
         />
-        <Erro id="erro-bairro" texto={erros.bairro} />
+        <ErroCampo id="erro-bairro" texto={erros.bairro} />
       </div>
 
       <div className="linha-campos">
@@ -167,7 +161,7 @@ export function CamposEndereco({
             aria-invalid={erros.cidade ? true : undefined}
             aria-describedby={erros.cidade ? "erro-cidade" : undefined}
           />
-          <Erro id="erro-cidade" texto={erros.cidade} />
+          <ErroCampo id="erro-cidade" texto={erros.cidade} />
         </div>
         <div className="campo">
           <label htmlFor="uf">UF</label>
@@ -187,7 +181,7 @@ export function CamposEndereco({
               </option>
             ))}
           </select>
-          <Erro id="erro-uf" texto={erros.uf} />
+          <ErroCampo id="erro-uf" texto={erros.uf} />
         </div>
       </div>
     </fieldset>

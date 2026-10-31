@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BotaoExcluir } from "@/components/BotaoExcluir";
+import { Avatar } from "@/components/ui/Avatar";
+import { Cartao } from "@/components/ui/Cartao";
+import { EstadoVazio } from "@/components/ui/EstadoVazio";
 import { idDaRota } from "@/lib/dados/contexto";
 import { listarMedicamentosDoPaciente } from "@/lib/dados/medicamentos";
 import { obterPaciente } from "@/lib/dados/pacientes";
@@ -36,14 +39,25 @@ export default async function PaginaPaciente({ params }: Props) {
   if (!paciente) notFound();
   const medicamentos = (await listarMedicamentosDoPaciente(id)) ?? [];
   const idade = idadeEm(paciente.data_nascimento, agora().data);
+  const endereco = enderecoResumido(paciente);
 
   return (
     <>
-      <p>
+      <p className="voltar">
         <Link href="/pacientes">← Pacientes</Link>
       </p>
-      <div className="titulo-com-acao">
-        <h1>{paciente.nome}</h1>
+      <div className="pagina-cabecalho">
+        <div className="cartao-paciente-topo">
+          <Avatar nome={paciente.nome} tamanho={52} />
+          <div>
+            <h1>{paciente.nome}</h1>
+            <p className="texto-suave">
+              {paciente.data_nascimento
+                ? `Nascimento: ${dataBR(paciente.data_nascimento)}${idade !== null ? ` · ${idade} anos` : ""}`
+                : "Data de nascimento não informada"}
+            </p>
+          </div>
+        </div>
         <div className="acoes-linha">
           <Link href={`/pacientes/${id}/editar`} className="botao botao-secundario">
             Editar paciente
@@ -56,22 +70,23 @@ export default async function PaginaPaciente({ params }: Props) {
         </div>
       </div>
 
-      <div className="cartao">
-        <p className="texto-suave">
-          {paciente.data_nascimento
-            ? `Nascimento: ${dataBR(paciente.data_nascimento)}${idade !== null ? ` (${idade} anos)` : ""}`
-            : "Data de nascimento não informada"}
-        </p>
-        {(paciente.cep || paciente.logradouro || paciente.cidade) && (
-          <p>
-            <strong>Endereço:</strong> {enderecoResumido(paciente)}
-            {paciente.cep ? ` — CEP ${formatarCep(paciente.cep)}` : ""}
-          </p>
-        )}
-        {paciente.observacao && <p>{paciente.observacao}</p>}
-      </div>
+      {(endereco || paciente.cep || paciente.observacao) && (
+        <Cartao className="cartao-compacto">
+          {(endereco || paciente.cep) && (
+            <p>
+              <strong>Endereço:</strong> {endereco}
+              {paciente.cep ? `${endereco ? " — " : ""}CEP ${formatarCep(paciente.cep)}` : ""}
+            </p>
+          )}
+          {paciente.observacao && (
+            <p>
+              <strong>Observações:</strong> {paciente.observacao}
+            </p>
+          )}
+        </Cartao>
+      )}
 
-      <div className="titulo-com-acao">
+      <div className="pagina-cabecalho secao-cabecalho">
         <h2>Medicamentos</h2>
         <Link href={`/pacientes/${id}/medicamentos/novo`} className="botao">
           + Novo medicamento
@@ -79,27 +94,28 @@ export default async function PaginaPaciente({ params }: Props) {
       </div>
 
       {medicamentos.length === 0 ? (
-        <div className="cartao">
-          <p>Nenhum medicamento cadastrado para este paciente.</p>
-        </div>
+        <EstadoVazio titulo="Nenhum medicamento cadastrado para este paciente.">
+          Adicione o primeiro medicamento com seus horários e dias da semana.
+        </EstadoVazio>
       ) : (
-        <ul className="lista-cartoes" aria-label={`Medicamentos de ${paciente.nome}`}>
+        <ul className="grade grade-cartoes lista-sem-marcas" aria-label={`Medicamentos de ${paciente.nome}`}>
           {medicamentos.map((m) => (
-            <li key={m.id} className="cartao cartao-item">
+            <li key={m.id} className="cartao cartao-medicamento">
               <div>
-                <h3 className="cartao-titulo">{m.nome}</h3>
+                <h3>{m.nome}</h3>
                 <p>
                   <strong>Dose:</strong> {m.dose}
                 </p>
                 {m.observacao && <p className="texto-suave">{m.observacao}</p>}
-                <ul className="lista-horarios" aria-label={`Horários de ${m.nome}`}>
-                  {m.horarios.map((h) => (
-                    <li key={h.id}>
-                      <span className="hora">{h.hora}</span> — {descreverDias(h.dias_semana)}
-                    </li>
-                  ))}
-                </ul>
               </div>
+              <ul className="lista-horarios" aria-label={`Horários de ${m.nome}`}>
+                {m.horarios.map((h) => (
+                  <li key={h.id} className="horario-item">
+                    <span className="hora">{h.hora}</span>
+                    <span className="texto-suave">{descreverDias(h.dias_semana)}</span>
+                  </li>
+                ))}
+              </ul>
               <div className="acoes-linha">
                 <Link href={`/medicamentos/${m.id}/editar`} className="botao botao-secundario">
                   Editar
