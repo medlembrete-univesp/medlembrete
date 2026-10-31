@@ -672,6 +672,8 @@ p + p {
   font-weight: 500;
   color: var(--ink);
   max-width: 30rem;
+  text-align: center;
+  align-self: center;
 }
 .cartao-login-dir {
   padding: 40px 48px;
@@ -714,6 +716,7 @@ p + p {
 .cartao-login-rodape {
   font-size: 0.85rem;
   color: var(--muted);
+  text-align: center;
 }
 @media (max-width: 640px) {
   .publico {
