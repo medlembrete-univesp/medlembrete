@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" width="420" height="300" role="img" aria-labelledby="t">
+  <title id="t">Ilustração: relógio, frasco de remédio e comprimidos</title>
+  <!-- fundo suave -->
+  <ellipse cx="210" cy="262" rx="170" ry="18" fill="#13A8A2" opacity="0.18"/>
+  <!-- relógio -->
+  <circle cx="130" cy="130" r="78" fill="#FFFFFF" stroke="#13A8A2" stroke-width="8"/>
+  <circle cx="130" cy="130" r="60" fill="none" stroke="#D6EEEC" stroke-width="3"/>
+  <g stroke="#13A8A2" stroke-width="5" stroke-linecap="round">
+    <line x1="130" y1="82" x2="130" y2="92"/>
+    <line x1="178" y1="130" x2="168" y2="130"/>
+    <line x1="130" y1="178" x2="130" y2="168"/>
+    <line x1="82" y1="130" x2="92" y2="130"/>
+  </g>
+  <g stroke="#0B7A76" stroke-width="7" stroke-linecap="round">
+    <line x1="130" y1="130" x2="130" y2="96"/>
+    <line x1="130" y1="130" x2="158" y2="146"/>
+  </g>
+  <circle cx="130" cy="130" r="7" fill="#0B7A76"/>
+  <!-- frasco -->
+  <rect x="252" y="96" width="86" height="150" rx="16" fill="#FFFFFF" stroke="#13A8A2" stroke-width="8"/>
+  <rect x="262" y="74" width="66" height="30" rx="8" fill="#13A8A2"/>
+  <rect x="266" y="150" width="58" height="56" rx="8" fill="#D6EEEC"/>
+  <path d="M283 178h24M295 166v24" stroke="#0B7A76" stroke-width="7" stroke-linecap="round"/>
+  <!-- comprimidos -->
+  <g transform="rotate(-30 215 232)">
+    <rect x="183" y="216" width="64" height="32" rx="16" fill="#13A8A2"/>
+    <rect x="183" y="216" width="32" height="32" rx="16" fill="#FFFFFF" stroke="#13A8A2" stroke-width="6"/>
+  </g>
+  <circle cx="360" cy="236" r="16" fill="#FFFFFF" stroke="#13A8A2" stroke-width="6"/>
+  <circle cx="392" cy="214" r="12" fill="#13A8A2"/>
+  <!-- check -->
+  <circle cx="196" cy="62" r="26" fill="#1C7A43"/>
+  <path d="M183 63l9 9 18-20" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,92 +1,27 @@
 /* MedLembrete — tema padrão e alto contraste (RNF01) */
 
+/* MedLembrete — camada de componentes. Os tokens de cor ficam em tokens.css.
+   As variáveis abaixo são aliases de compatibilidade das telas ainda não migradas. */
 :root {
-  --fonte: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --fundo: #ffffff;
-  --superficie: #f4f6f8;
-  --texto: #1b1f23;
-  --texto-suave: #4a5560;
-  --borda: #c2cad2;
-  --primaria: #0b5cad;
-  --primaria-texto: #ffffff;
-  --primaria-hover: #084a8c;
-  --foco: #d97706;
-  --erro: #b3261e;
-  --erro-fundo: #fdecea;
-  --sucesso: #1b6e3a;
-  --sucesso-fundo: #e6f4ea;
-  --alerta: #8a5a00;
-  --alerta-fundo: #fff4d6;
-  --raio: 8px;
+  --fundo: var(--surface);
+  --superficie: var(--surface-2);
+  --texto: var(--ink);
+  --texto-suave: var(--muted);
+  --borda: var(--line);
+  --primaria: var(--primary);
+  --primaria-texto: var(--on-primary);
+  --primaria-hover: var(--primary-hover);
+  --foco: var(--focus);
+  --erro: var(--danger);
+  --erro-fundo: var(--danger-soft);
+  --sucesso: var(--ok);
+  --sucesso-fundo: var(--ok-soft);
+  --alerta: var(--warn);
+  --alerta-fundo: var(--warn-soft);
+  --raio: var(--raio-botao);
 }
 
-[data-tema="contraste"] {
-  --fundo: #000000;
-  --superficie: #111111;
-  --texto: #ffffff;
-  --texto-suave: #ffe14d;
-  --borda: #ffe14d;
-  --primaria: #ffe14d;
-  --primaria-texto: #000000;
-  --primaria-hover: #fff27f;
-  --foco: #ffffff;
-  --erro: #ff8a80;
-  --erro-fundo: #2a0000;
-  --sucesso: #7dff9e;
-  --sucesso-fundo: #002a0c;
-  --alerta: #ffe14d;
-  --alerta-fundo: #2a2200;
-}
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 18px;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: var(--fonte);
-  line-height: 1.5;
-  color: var(--texto);
-  background: var(--fundo);
-}
-
-/* Foco sempre visível, com contraste nos dois temas */
-:focus-visible {
-  outline: 3px solid var(--foco);
-  outline-offset: 3px;
-}
-
-a {
-  color: var(--primaria);
-  text-underline-offset: 0.15em;
-}
-[data-tema="contraste"] a {
-  color: var(--primaria);
-}
-
-h1,
-h2,
-h3 {
-  line-height: 1.2;
-  margin: 0 0 0.75rem;
-}
-h1 {
-  font-size: 1.75rem;
-}
-h2 {
-  font-size: 1.35rem;
-}
-
-p {
-  margin: 0 0 1rem;
-}
 
 /* Link "Pular para o conteúdo" */
 .pular {
@@ -210,7 +145,7 @@ button {
   border-color: var(--erro);
   color: #ffffff;
 }
-[data-tema="contraste"] .botao-perigo {
+[data-theme="hc"] .botao-perigo {
   color: #000000;
 }
 .botao-grande {
@@ -690,4 +625,491 @@ fieldset {
 }
 .filtro .botao[aria-current="true"] {
   outline: 3px solid transparent;
+}
+
+
+/* =====================================================================
+   Redesign — componentes base (spec seção 5)
+   ===================================================================== */
+
+h1 + p,
+h2 + p,
+p + p {
+  margin-top: 0.5rem;
+}
+
+.texto-suave {
+  color: var(--muted);
+}
+
+/* Botões */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: var(--raio-botao);
+  background: var(--primary);
+  color: var(--on-primary);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+.botao:hover {
+  background: var(--primary-hover);
+  color: var(--on-primary);
+}
+.botao-secundario {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 10px 18px;
+}
+.botao-secundario:hover {
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+[data-theme="hc"] .botao-secundario:hover {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.botao-perigo {
+  background: var(--danger);
+  color: #fff;
+}
+[data-theme="hc"] .botao-perigo {
+  color: #000;
+}
+.botao-pilula {
+  border-radius: var(--raio-pilula);
+  padding: 14px 36px;
+}
+.botao-pilula.botao-secundario {
+  padding: 12px 34px;
+}
+/* pílula sobre o fundo verde-água: fundo escuro garante 4,5:1 no texto branco */
+.botao-claro {
+  background: var(--sidebar);
+  color: #fff;
+  border: 2px solid #fff;
+}
+.botao-claro:hover {
+  background: var(--primary-hover);
+  color: #fff;
+}
+.botao-grande {
+  font-size: 1.1rem;
+}
+.botao-pequeno {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: var(--raio-botao-pequeno);
+  font-size: 0.95rem;
+}
+.botao:disabled,
+.botao[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Campos */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.campo label,
+.legenda {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.campo input,
+.campo select,
+.campo textarea {
+  font: inherit;
+  font-size: 1rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+}
+.campo input[aria-invalid="true"],
+.campo select[aria-invalid="true"],
+.campo textarea[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+/* variante do login: só linha inferior */
+.campo-linha input,
+.campo-linha select {
+  border: 0;
+  border-bottom: 2px solid var(--muted);
+  border-radius: 0;
+  padding: 10px 0;
+  font-size: 1.1rem;
+  background: transparent;
+}
+.campo-linha input:focus-visible,
+.campo-linha select:focus-visible {
+  outline-offset: 4px;
+}
+.campo-linha input[aria-invalid="true"] {
+  border-bottom-color: var(--danger);
+}
+.ajuda {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.erro-campo {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--danger);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.erro-campo::before {
+  content: none;
+}
+.erro-campo svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+.caixa-marcar {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.caixa-marcar input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--primary);
+  margin: 0;
+}
+
+/* Mensagens de bloco */
+.mensagem {
+  display: block;
+  padding: 12px 16px;
+  border-radius: var(--raio-item);
+  border: 2px solid;
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+.mensagem-erro {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-color: var(--danger);
+}
+.mensagem-sucesso {
+  color: var(--ok);
+  background: var(--ok-soft);
+  border-color: var(--ok);
+}
+.mensagem-alerta {
+  color: var(--warn);
+  background: var(--warn-soft);
+  border-color: var(--warn);
+}
+
+/* Cartão */
+.cartao {
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--raio-cartao);
+  padding: 24px;
+  margin: 0;
+}
+.cartao-destaque {
+  background: var(--sidebar);
+  color: var(--on-sidebar);
+  border-color: var(--sidebar);
+}
+[data-theme="hc"] .cartao-destaque {
+  border-color: var(--line);
+}
+.cartao-destaque .texto-suave,
+.cartao-destaque a {
+  color: var(--on-sidebar);
+}
+.cartao-cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Selo (badge) de status */
+.selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--raio-pilula);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+.selo-ok {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.selo-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.selo-warn {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+.selo-neutro {
+  background: var(--surface);
+  color: var(--muted);
+}
+
+/* Barra de progresso */
+.barra {
+  height: 10px;
+  border-radius: var(--raio-pilula);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.barra-preenchimento {
+  height: 100%;
+  border-radius: var(--raio-pilula);
+  background: var(--ok);
+}
+.barra-warn .barra-preenchimento {
+  background: var(--warn);
+}
+.barra-invertida {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: transparent;
+}
+.barra-invertida .barra-preenchimento {
+  background: var(--on-sidebar);
+}
+[data-theme="hc"] .barra-invertida {
+  border-color: var(--line);
+}
+
+/* Avatar */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+[data-theme="hc"] .avatar {
+  border: 2px solid var(--line);
+}
+.avatar-claro {
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--on-sidebar);
+}
+
+/* Estado vazio */
+.estado-vazio {
+  padding: 44px 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.estado-vazio p {
+  max-width: 36rem;
+}
+.estado-vazio-acao {
+  margin-top: 8px;
+}
+
+/* Logo */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  text-decoration: none;
+}
+.logo-marca {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.logo-marca-contornada {
+  background: transparent;
+  color: var(--on-sidebar);
+  border: 2px solid var(--on-sidebar);
+}
+.logo-nome {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* =====================================================================
+   Login e cadastro (spec 6.1)
+   ===================================================================== */
+.publico {
+  min-height: 100vh;
+  background: var(--brand);
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.publico-topo {
+  width: 100%;
+  max-width: 1080px;
+  display: flex;
+  justify-content: flex-end;
+}
+.cartao-login {
+  width: 100%;
+  max-width: 1080px;
+  background: var(--surface);
+  border-radius: var(--raio-login);
+  overflow: hidden;
+  box-shadow: 0 30px 60px -20px rgba(4, 50, 48, 0.45);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+}
+[data-theme="hc"] .cartao-login {
+  border: 2px solid var(--line);
+  box-shadow: none;
+}
+.cartao-login-esq {
+  background: var(--primary-soft);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  justify-content: center;
+}
+[data-theme="hc"] .cartao-login-esq {
+  border-right: 2px solid var(--line);
+}
+.cartao-login-ilustracao {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  align-self: center;
+}
+.cartao-login-frase {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--ink);
+  max-width: 30rem;
+}
+.cartao-login-dir {
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 560px;
+}
+.cartao-login-acao {
+  display: flex;
+  justify-content: flex-end;
+}
+.cartao-login-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cartao-login-form:focus {
+  outline: none;
+}
+.formulario-login {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.titulo-login {
+  font-size: 2.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+.login-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  margin-top: 8px;
+}
+.cartao-login-rodape {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+@media (max-width: 640px) {
+  .publico {
+    padding: 20px 12px;
+  }
+  .cartao-login-esq,
+  .cartao-login-dir {
+    padding: 28px 22px;
+  }
+  .cartao-login-dir {
+    min-height: 0;
+  }
+  .titulo-login {
+    font-size: 1.9rem;
+  }
+  .cartao-login-ilustracao {
+    max-width: 240px;
+  }
+  .cartao-login-esq {
+    gap: 20px;
+  }
+  .publico-topo .botao-pilula {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+  .cartao-login-acao .botao-pilula {
+    padding: 10px 22px;
+  }
+}
+
+/* Página simples (ex.: não encontrada) */
+.pagina-simples {
+  max-width: 40rem;
+  margin: 10vh auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }

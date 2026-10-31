@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { FormularioMedicamento } from "@/components/FormularioMedicamento";
 import { idDaRota } from "@/lib/dados/contexto";
 import { obterPaciente } from "@/lib/dados/pacientes";
-import { acaoCriarMedicamento } from "@/app/medicamentos/acoes";
+import { acaoCriarMedicamento } from "@/app/(app)/medicamentos/acoes";
 
 export const metadata: Metadata = { title: "Novo medicamento" };
 export const dynamic = "force-dynamic";

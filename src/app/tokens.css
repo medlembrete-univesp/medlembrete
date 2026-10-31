@@ -1,0 +1,126 @@
+/* MedLembrete — design tokens. Todas as cores do app vêm daqui. */
+
+:root {
+  --bg: #eaf4f3; /* fundo da área logada */
+  --surface: #ffffff; /* cartões */
+  --surface-2: #f3f8f8; /* linhas/itens dentro de cartões */
+  --ink: #14302e; /* texto principal */
+  --muted: #4d6563; /* texto secundário */
+  --line: #d3e3e1; /* bordas */
+  --primary: #0b7a76; /* botões, links */
+  --primary-hover: #09625f;
+  --on-primary: #ffffff;
+  --primary-soft: #d6eeec; /* avatares, painel da ilustração */
+  --brand: #13a8a2; /* fundo da tela de login */
+  --sidebar: #0b6e6a; /* menu lateral e cartões de destaque */
+  --on-sidebar: #e4f5f4;
+  --nav-active-bg: #ffffff;
+  --nav-active-ink: #0b6e6a;
+  --ok: #1c7a43;
+  --ok-soft: #ddf2e5;
+  --warn: #9a5208;
+  --warn-soft: #fcebd5;
+  --danger: #b42318;
+  --danger-soft: #fbe3e1;
+  --focus: #f2b705;
+
+  /* raios */
+  --raio-cartao: 20px;
+  --raio-kpi: 16px;
+  --raio-item: 14px;
+  --raio-botao: 12px;
+  --raio-botao-pequeno: 10px;
+  --raio-pilula: 999px;
+  --raio-login: 24px;
+
+  --fonte: var(--font-figtree), "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Alto contraste (RNF01): data-theme="hc" no <html> */
+[data-theme="hc"] {
+  --bg: #000;
+  --surface: #000;
+  --surface-2: #000;
+  --ink: #fff;
+  --muted: #fff;
+  --line: #fff;
+  --primary: #ffe14d;
+  --primary-hover: #fff;
+  --on-primary: #000;
+  --primary-soft: #000;
+  --brand: #000;
+  --sidebar: #000;
+  --on-sidebar: #fff;
+  --nav-active-bg: #ffe14d;
+  --nav-active-ink: #000;
+  --ok: #7cff9e;
+  --ok-soft: #000;
+  --warn: #ffc266;
+  --warn-soft: #000;
+  --danger: #ff8a80;
+  --danger-soft: #000;
+  --focus: #ffe14d;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 17px;
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--fonte);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--primary);
+  text-underline-offset: 3px;
+}
+a:hover {
+  color: var(--primary-hover);
+}
+
+/* Foco em dois tons: anel escuro + anel amarelo, visível em qualquer fundo (≥ 3:1) */
+*:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--focus);
+}
+[data-theme="hc"] *:focus-visible {
+  outline-color: var(--focus);
+  box-shadow: 0 0 0 6px var(--ink);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin: 0;
+}
+h1 {
+  font-size: 2rem; /* 34px */
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+h2 {
+  font-size: 1.25rem; /* 21px */
+  font-weight: 700;
+}
+h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+p {
+  margin: 0;
+}

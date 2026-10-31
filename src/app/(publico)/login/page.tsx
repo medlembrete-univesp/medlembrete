@@ -26,7 +26,6 @@ export default async function PaginaLogin({ searchParams }: Props) {
 
   return (
     <>
-      <h1>Entrar</h1>
       <FormularioLogin
         proximo={proximo}
         aviso={cadastro === "ok" ? "Conta criada. Agora entre com seu e-mail e senha." : undefined}

@@ -20,7 +20,6 @@ export default function PaginaCadastro() {
 
   return (
     <>
-      <h1>Criar conta</h1>
       <FormularioCadastro />
     </>
   );

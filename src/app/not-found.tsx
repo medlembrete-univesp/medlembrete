@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function NaoEncontrado() {
   return (
-    <>
+    <div className="pagina-simples">
       <h1>Página não encontrada</h1>
       <p>O endereço não existe ou o registro não pertence à sua conta.</p>
       <p>
@@ -10,6 +10,6 @@ export default function NaoEncontrado() {
           Ir para Hoje
         </Link>
       </p>
-    </>
+    </div>
   );
 }

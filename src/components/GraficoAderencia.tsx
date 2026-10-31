@@ -18,11 +18,11 @@ function coresDoTema() {
   return {
     // Série única: uma cor só, a primária do tema. No alto contraste é o amarelo do
     // RNF01 (fora da faixa usual de luminosidade, de propósito: é um tema de baixa visão).
-    barra: ler("--primaria", "#0b5cad"),
-    texto: ler("--texto", "#1b1f23"),
-    textoSuave: ler("--texto-suave", "#4a5560"),
-    grade: ler("--borda", "#c2cad2"),
-    fundo: ler("--fundo", "#ffffff"),
+    barra: ler("--primary", "#0b7a76"),
+    texto: ler("--ink", "#14302e"),
+    textoSuave: ler("--muted", "#4d6563"),
+    grade: ler("--line", "#d3e3e1"),
+    fundo: ler("--surface", "#ffffff"),
   };
 }
 
@@ -125,7 +125,7 @@ export function GraficoAderencia({ itens, comPaciente, descricao }: Props) {
       grafico.current?.destroy();
       grafico.current = new Chart(canvas.current, montarConfig());
     });
-    observador.observe(document.documentElement, { attributes: true, attributeFilter: ["data-tema"] });
+    observador.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
     return () => {
       observador.disconnect();
