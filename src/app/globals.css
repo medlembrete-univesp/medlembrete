@@ -786,6 +786,7 @@ p + p {
   padding: 24px 4px 8px;
   font-size: 0.85rem;
   color: var(--muted);
+  text-align: center;
 }
 
 .sidebar {
