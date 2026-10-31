@@ -36,10 +36,7 @@ export default function LayoutPublico({ children }: { children: ReactNode }) {
           <main id="conteudo" tabIndex={-1} className="cartao-login-form">
             {children}
           </main>
-          <p className="cartao-login-rodape">
-            MedLembrete — Projeto Integrador II, UNIVESP. Os lembretes funcionam enquanto a página estiver
-            aberta.
-          </p>
+          <p className="cartao-login-rodape">MedLembrete — Projeto Integrador II, UNIVESP.</p>
         </section>
       </div>
     </div>
