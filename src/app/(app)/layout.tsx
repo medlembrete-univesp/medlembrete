@@ -1,47 +1,26 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
-import { BotaoContraste } from "@/components/BotaoContraste";
-import { Navegacao } from "@/components/Navegacao";
+import { Sidebar } from "@/components/Sidebar";
 import { usuarioAtual } from "@/lib/supabase/servidor";
 
-/**
- * Layout da área logada. Versão provisória com o cabeçalho antigo; a sidebar
- * entra no passo 4 do redesign.
- */
+/** Layout da área logada (spec 6.2): sidebar fixa + conteúdo em cartões + rodapé. */
 export default async function LayoutApp({ children }: { children: ReactNode }) {
   const usuario = await usuarioAtual();
 
   return (
-    <>
+    <div className="app">
       <a href="#conteudo" className="pular">
         Pular para o conteúdo
       </a>
-      <header className="cabecalho">
-        <div className="cabecalho-interno">
-          <Link href={usuario ? "/hoje" : "/login"} className="marca">
-            MedLembrete
-          </Link>
-          {usuario && <Navegacao />}
-          <div className="acoes-cabecalho">
-            <BotaoContraste />
-            {usuario ? (
-              <form action="/logout" method="post">
-                <span className="usuario-logado visualmente-oculto">Logado como {usuario.nome}.</span>
-                <button type="submit" className="botao botao-secundario">
-                  Sair
-                </button>
-              </form>
-            ) : null}
-          </div>
-        </div>
-      </header>
-      <main id="conteudo" tabIndex={-1}>
-        {children}
-      </main>
-      <footer className="rodape">
-        MedLembrete — Projeto Integrador II, UNIVESP. Os lembretes funcionam enquanto a página estiver
-        aberta.
-      </footer>
-    </>
+      <Sidebar usuario={{ nome: usuario?.nome ?? "Profissional", email: usuario?.email ?? "" }} />
+      <div className="app-conteudo">
+        <main id="conteudo" tabIndex={-1}>
+          {children}
+        </main>
+        <footer className="rodape">
+          MedLembrete — Projeto Integrador II, UNIVESP. Os lembretes funcionam enquanto a página estiver
+          aberta.
+        </footer>
+      </div>
+    </div>
   );
 }

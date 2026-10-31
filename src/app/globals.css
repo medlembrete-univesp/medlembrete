@@ -40,73 +40,6 @@
   top: 0.5rem;
 }
 
-/* Estrutura */
-.cabecalho {
-  background: var(--superficie);
-  border-bottom: 2px solid var(--borda);
-}
-.cabecalho-interno {
-  max-width: 60rem;
-  margin: 0 auto;
-  padding: 0.5rem 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 1rem;
-}
-.marca {
-  font-weight: 800;
-  font-size: 1.25rem;
-  color: var(--texto);
-  text-decoration: none;
-  padding: 0.5rem 0;
-}
-.navegacao ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-}
-.navegacao a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0.5rem 0.75rem;
-  border-radius: var(--raio);
-  color: var(--texto);
-  text-decoration: none;
-  font-weight: 600;
-}
-.navegacao a:hover {
-  background: var(--fundo);
-  text-decoration: underline;
-}
-.navegacao a[aria-current="page"] {
-  background: var(--primaria);
-  color: var(--primaria-texto);
-}
-.acoes-cabecalho {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.usuario-logado {
-  color: var(--texto-suave);
-  font-size: 0.95rem;
-}
-
-main {
-  max-width: 60rem;
-  margin: 0 auto;
-  padding: 1.5rem 1rem 3rem;
-}
-main:focus {
-  outline: none;
-}
-
 /* Botões: área mínima 44 × 44 px */
 .botao,
 button {
@@ -300,14 +233,6 @@ th {
   border: 0;
 }
 
-.rodape {
-  max-width: 60rem;
-  margin: 0 auto;
-  padding: 1rem;
-  color: var(--texto-suave);
-  font-size: 0.9rem;
-  border-top: 1px solid var(--borda);
-}
 
 /* Títulos com botão ao lado */
 .titulo-com-acao {
@@ -925,9 +850,14 @@ p + p {
 [data-theme="hc"] .avatar {
   border: 2px solid var(--line);
 }
+/* sobre a sidebar: fundo claro e texto escuro (5:1) */
 .avatar-claro {
-  background: rgba(255, 255, 255, 0.18);
-  color: var(--on-sidebar);
+  background: var(--primary-soft);
+  color: var(--sidebar);
+}
+[data-theme="hc"] .avatar-claro {
+  background: var(--primary);
+  color: var(--on-primary);
 }
 
 /* Estado vazio */
@@ -1112,4 +1042,226 @@ p + p {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+
+/* =====================================================================
+   Área logada (spec 6.2): sidebar + conteúdo + rodapé
+   ===================================================================== */
+.app {
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+  gap: 20px;
+  padding: 20px;
+  min-height: 100vh;
+}
+.app-conteudo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.app-conteudo main {
+  flex: 1;
+  padding: 4px 4px 24px;
+}
+.app-conteudo main:focus {
+  outline: none;
+}
+.rodape {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding: 24px 4px 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.sidebar {
+  background: var(--sidebar);
+  color: var(--on-sidebar);
+  border-radius: var(--raio-cartao);
+  padding: 24px 16px;
+  position: sticky;
+  top: 20px;
+  height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+[data-theme="hc"] .sidebar {
+  border: 2px solid var(--line);
+}
+.sidebar .logo {
+  color: var(--on-sidebar);
+  padding: 0 6px;
+}
+.sidebar-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sidebar-menu-botao {
+  display: none;
+}
+.sidebar-painel {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  flex: 1;
+  min-height: 0;
+}
+.sidebar-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 12px 14px;
+  border-radius: var(--raio-botao);
+  color: var(--on-sidebar);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--on-sidebar);
+}
+.nav-item[aria-current="page"] {
+  background: var(--nav-active-bg);
+  color: var(--nav-active-ink);
+}
+.nav-item[aria-current="page"]:hover {
+  color: var(--nav-active-ink);
+}
+.sidebar-base {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.botao-sidebar {
+  width: 100%;
+  justify-content: flex-start;
+  background: transparent;
+  color: var(--on-sidebar);
+  border: 2px solid var(--on-sidebar);
+  padding: 10px 14px;
+}
+.botao-sidebar:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--on-sidebar);
+}
+[data-theme="hc"] .botao-sidebar:hover {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.sidebar-divisor {
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  margin: 8px 0;
+}
+[data-theme="hc"] .sidebar-divisor {
+  border-top-color: var(--line);
+}
+.sidebar-usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.sidebar-usuario-texto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.sidebar-usuario-nome {
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-usuario-email {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* foco sobre o fundo escuro da sidebar: anel claro + amarelo */
+.sidebar *:focus-visible {
+  outline-color: var(--on-sidebar);
+}
+
+/* Cabeçalho de página e grades de cartões (usados pelas telas) */
+.pagina-cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.pagina-cabecalho .texto-suave {
+  margin-bottom: 4px;
+}
+.grade {
+  display: grid;
+  gap: 20px;
+}
+.grade-kpis {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+.grade-cartoes {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+}
+.grade-2 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+}
+.grade-3 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+.pilha {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Celular: sidebar vira barra superior com botão de menu */
+@media (max-width: 767px) {
+  .app {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    gap: 16px;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    padding: 12px 14px;
+    gap: 16px;
+  }
+  .sidebar-menu-botao {
+    display: inline-flex;
+    width: auto;
+  }
+  .sidebar-painel {
+    display: none;
+  }
+  .sidebar-aberta .sidebar-painel {
+    display: flex;
+  }
+  .sidebar-base {
+    margin-top: 8px;
+  }
+  .app-conteudo main {
+    padding: 0 0 16px;
+  }
 }
