@@ -51,10 +51,6 @@ export function FormularioLogin({ proximo, aviso }: { proximo?: string; aviso?: 
         <button type="submit" className="botao botao-pilula botao-grande" disabled={pendente}>
           {pendente ? "Entrando…" : "Entrar"}
         </button>
-        <label className="caixa-marcar" htmlFor="lembrar">
-          <input id="lembrar" name="lembrar" type="checkbox" defaultChecked />
-          <span>Lembrar de mim</span>
-        </label>
       </div>
     </form>
   );
